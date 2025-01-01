@@ -1,0 +1,22 @@
+
+<div class=" px-[10px] py-[18px] flex justify-center border-b-[2px] border-custom-gray shadow-sm shadow-custom-gray cursor-pointer" routerLink="/instructor/dashboard">
+    <h2>Chế độ giảng viên</h2>
+</div>
+
+<div class="flex flex-col text-text-color text-[18px] mt-5">
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/instructor/courses"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/instructor/courses')}"
+    >
+        Khóa học
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/instructor/earnings-management/statistics"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/instructor/earnings-management')}"
+    >
+        Thu nhập
+    </a>
+
+</div>

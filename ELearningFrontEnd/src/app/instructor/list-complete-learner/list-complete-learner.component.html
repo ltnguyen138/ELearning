@@ -1,0 +1,33 @@
+<div class="mt-5 border-[1px] border-neutral-400 py-5 px-3 bg-gray-100">
+    <div class="flex justify-between flex-wrap gap-x-10 gap-y-5 ">
+        <div class="flex gap-x-10 gap-y-5  flex-wrap"   >
+
+            <span class="font-semibold">Chương {{index + 1}}:  </span>
+            <span class="font-semibold"> {{chapter.name}}</span>
+
+        </div>
+        <button class="hover:text-active-btn" (click)="isShowListLecture = !isShowListLecture">
+            <i *ngIf="isShowListLecture" class="fa-solid fa-angle-down"></i>
+            <i *ngIf="!isShowListLecture" class="fa-solid fa-angle-up"></i>
+        </button>
+    </div>
+
+
+
+    <div class="mt-8 px-3   " *ngIf="isShowListLecture" @slideToggle>
+
+        <ng-container *ngFor="let lecture of lectures, let i = index" >
+            <div class="mt-5  px-3 border-[1px] shadow-custom-gray shadow-md bg-white">
+                <div class="p-4  rounded-lg ">
+                    <h3 class="text-lg font-bold text-gray-800">Bài giảng {{ i+1 }}: <span class="">{{ lecture.name }}</span></h3>
+                    <p class="mt-2 text-gray-600">
+                        Số lượng học viên hoàn thành bài giảng:
+                        <span class="font-semibold text-green-600">{{ lecture.countLearnerComplete }}</span>
+                    </p>
+                </div>
+
+            </div>
+        </ng-container>
+
+    </div>
+</div>

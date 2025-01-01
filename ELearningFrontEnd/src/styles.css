@@ -1,0 +1,66 @@
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+    @tailwind base;
+    *{
+        box-sizing:border-box
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f9fa;
+
+    }
+    :root{
+        --header-h: 120px;
+        --header-with-search-h: 76px;
+        --header-menu-h: 44px;
+    }
+    h1{
+        font-size: 28px;
+        font-weight: 700;
+    }
+    h2{
+        font-size: 23px;
+        font-weight: 700;
+    }
+    .p-calendar{
+        width: 100%;
+
+    }
+    .p-autocomplete{
+        width: 100%;
+
+    }
+    .cdk-drag-preview {
+        border: 1px solid #ddd;
+        background-color: #fff;
+        padding: 16px;
+    }
+
+    .cdk-drag-placeholder {
+        background: #f0f0f0;
+        border: dashed 2px #ccc;
+    }
+
+}
+
+@layer tailwind-utilities {
+    @tailwind components;
+    @tailwind utilities;
+}
+
+@layer base{
+
+}
+
+/* Core Data Grid CSS */
+@import 'ag-grid-community/styles/ag-grid.css';
+/* Quartz Theme Specific CSS */
+@import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+.header-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

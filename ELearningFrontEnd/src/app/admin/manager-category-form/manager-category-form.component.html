@@ -1,0 +1,37 @@
+<div class=" mt-10 md:w-[90%] md:max-w-[1400px]  mx-auto px-2 text-text-color mb-10 relative">
+    <div class="title border-b-[2px] border-border-color">
+        <h1 *ngIf="mode==='add'" class="leading-relaxed">Thêm mới chủ đề khóa học</h1>
+        <h1 *ngIf="mode==='edit'" class="leading-relaxed">Cập nhật chủ đề khóa học {{currentCategory?.name}}</h1>
+    </div>
+    <form [formGroup]="categoryForm" class="mt-5">
+        <div class="max-w-[600px]  mt-10 ">
+
+            <div class="form-item">
+                <label for="name" class="block text-base font-[600]  ">Tên chủ đề</label>
+                <div class="mt-2">
+                    <input id="name" name="name" type="text"
+                           class="
+                               block
+                               w-full
+                               py-2.5 px-1.5
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                           formControlName="name"
+                    >
+                </div>
+            </div>
+            <div class="mt-8 form-item flex items-center gap-10">
+                <label for="activated" class=" text-base font-[600]  ">Trạng thái:</label>
+                <input type="checkbox" class="form-checkbox hover:cursor-pointer h-[26px] w-[26px] focus:ring focus:ring-blue-600 focus:ring-opacity-50" formControlName="activated">
+            </div>
+
+            <div class="acction-btn mt-10 flex justify-center gap-10">
+                <button class="py-2.5 px-14 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="saveCategory()">Lưu</button>
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" routerLink="/admin/categories" >Quay lại</button>
+            </div>
+        </div>
+    </form>
+</div>

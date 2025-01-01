@@ -1,0 +1,57 @@
+<div class=" mt-5 w-full max-w-[1500px]  mx-auto px-2 text-text-color mb-10 relative pb-[80px]">
+
+<!--    <div class="title border-b-[2px] border-border-color pb-5">-->
+<!--        <h1 class="text-[22px]">Quản lý thu nhập và rút tiền</h1>-->
+<!--    </div>-->
+    <div class="flex gap-8 items-center mt-3 border-b-[2px] border-border-color pb-5"  *ngIf="loggedInUser">
+        <img [src]="profilePictureApi" alt="avatar" class="w-[70px] h-[70px] rounded-full border-custom-gray border-2 shadow-gray-400 shadow-md object-cover">
+        <h2> Xin chào {{loggedInUser.fullName}} !!</h2>
+    </div>
+
+    <div class="last-payout-info flex items-center space-x-2 p-4 bg-gray-200 rounded-md shadow-sm">
+        <label class="font-semibold text-gray-700">Lần rút tiền gần nhất của bạn:</label>
+        <span class="text-gray-900" *ngIf="payoutHistory.length == 0">Chưa có</span>
+        <span class="text-gray-900" *ngIf="payoutHistory.length > 0">{{payoutHistory[0].payoutDate}}</span>
+    </div>
+
+    <div class="p-5 mt-8 shadow-gray-400 shadow-md border-[2px] border-border-color " >
+        <div class="min-w-[1300px]">
+            <app-grid-statistic-type-course [statisticsData]="earning!.statistics" [title]="title" [refunded] = "false" ></app-grid-statistic-type-course>
+
+        </div>
+    </div>
+    <div class="summary mt-8  mx-auto flex justify-start shadow-gray-400 shadow-md border-[2px] border-custom-gray px-5 py-10  md:justify-center">
+        <div class="w-[600px]">
+            <div class="shadow-gray-400 shadow-md border-[2px] border-border-color py-10 px-20">
+                <h2 class="text-center mb-3">Tổng kết</h2>
+
+                <div class="grid grid-cols-2 font-semibold gap-3 mt-5" >
+                    <div class="col-span-1">Tổng giá khóa học: </div>
+                    <div class="col-span-1 flex justify-end"><span >{{ roundAndFormatNumber(earning!.totalEarning) }}</span></div>
+                </div>
+                <div class="grid grid-cols-2  gap-3 mt-3" >
+                    <div class="col-span-1">Khuyến mãi từ khóa học: </div>
+                    <div class="col-span-1 flex justify-end"><span class="text-red-500 font-semibold">- {{ roundAndFormatNumber(earning!.courseDiscount) }}</span></div>
+                </div>
+                <div class="grid grid-cols-2  gap-3 mt-3" >
+                    <div class="col-span-1">Phí dịch vụ (20%): </div>
+                    <div class="col-span-1 flex justify-end "><span class="text-red-500 font-semibold">- {{ roundAndFormatNumber(earning!.fee) }}</span></div>
+                </div>
+                <div class="grid grid-cols-2 font-semibold gap-3 mt-3">
+                    <div class="col-span-1">Tổng thu nhập: </div>
+                    <div class="col-span-1 flex justify-end text-green-600"><span>{{ roundAndFormatNumber(earning!.finalEarning) }}</span></div>
+                </div>
+
+                <div class="mt-5">
+                    <button class="w-full bg-active-btn py-2.5 px-4 rounded-md text-white font-semibold hover:bg-active-btn-h" (click)="payout()" >Rút tiền</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fixed inset-0  bg-[rgba(12,12,12,0.6)] flex items-center justify-center " *ngIf="isLoaded">
+    <div class=" top-[2px] left-[48%]" >
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-blue-600"></div>
+    </div>
+</div>

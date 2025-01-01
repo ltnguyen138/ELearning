@@ -1,0 +1,105 @@
+<div class=" mt-6 md:w-[95%] md:max-w-[1000px]  mx-auto px-2 text-text-color mb-10 relative ">
+    <div class="text-center">
+        <h1>Tất cả khóa học</h1>
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-x-10 gap-y-5  py-5  px-2 items-center">
+        <div class="search">
+            <input type="text"
+                   class="
+                        header-search-input
+                        w-[200px]
+                        rounded-xl
+                        rounded-r-none
+                        p-2.5
+                        px-1.5
+                        shadow-sm
+                        border-2
+                        border-r-0
+                        border-custom-gray
+                        text-base placeholder:text-gray-500
+                        focus:outline-0
+                   "
+                   placeholder="Tìm kiếm ..." name="keywork"
+                   [(ngModel)]="keyword"
+                   (keydown.enter)="search()"
+            />
+            <button class="header-search-btn bg-active-btn py-2.5 px-4 rounded-r-xl border-2 border-l-0 border-custom-gray hover:bg-active-btn-h" (click)="search()">
+                <i class="fa-solid fa-magnifying-glass  fa-lg" style="color: #f2f2f2;"></i>
+            </button>
+        </div>
+        <div>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    [(ngModel)]="categoryIdFilter"
+                    (change)="onCategoryFilterChange($event)"
+            >
+                <option  [value]="-1">Tất cả chủ đề</option>
+                <ng-container *ngFor="let category of categories">
+                    <option [value]="category.id"> {{category.name}}</option>
+                </ng-container>
+            </select>
+        </div>
+    </div>
+<!--    <div class="flex flex-wrap gap-x-3 gap-y-5 border-b-[2px]  py-5  px-2 items-center">-->
+<!--        <span>Sắp xếp theo:</span>-->
+<!--        <div>-->
+<!--            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"-->
+<!--                    (change)="sortChange()"-->
+<!--                    [(ngModel)]="sortBy"-->
+<!--            >-->
+<!--                <option [value]="'updatedTime,desc'">Lần cập nhật gần nhất</option>-->
+<!--                <option  [value]="'updatedTime,asc'">Lần cập nhật cũ nhất</option>-->
+<!--                <option  [value]="'createdTime,desc'">Được tạo mới nhất</option>-->
+<!--                <option  [value]="'createdTime,asc'">Được tạo cũ nhất</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="mt-5 flex flex-wrap gap-x-8 gap-y-14 justify-center  ">
+        <ng-container *ngFor="let course of courses">
+            <div class="bg-white  rounded-md shadow-md w-[300px] shadow-gray-400 flex-shrink-0 my-2 cursor-pointer pb-2 transition-all duration-300 hover:scale-105 border-custom-gray border-[1px]" (click)="router.navigate(['/courses/' + course.alias])">
+                <div class="w-full h-[180px] box-border ">
+                    <img [src]="environment.apiGetImageCourse + course.image" alt="{{course.name}}"
+                         class="rounded-t-md mb-3 h-full w-full  object-cover  shadow-gray-300 shadow-md">
+                </div>
+                <div class="px-2 mt-3">
+                    <h3 class="font-bold text-lg mb-2 truncate-2-lines">{{ course.name }}</h3>
+                    <p class="text-sm text-gray-500 mb-2 ">{{ course.instructor.fullName }}</p>
+                    <div class="flex items-center mb-2">
+                        <app-rating-star [rating]="course.averageRating"> </app-rating-star>
+                        <span class="ml-1 text-sm">{{ course.averageRating }}</span>
+                        <span class="text-sm text-gray-500 ml-2">({{ course.ratingCount }} reviews)</span>
+                    </div>
+                    <div class="flex items-center mb-2" *ngIf="course.discountPrice>0">
+                        <span class="text-lg font-bold text-red-500">{{ course.price - course.discountPrice | number:'1.0-0' }} ₫</span>
+                        <!-- Giả sử giá thứ hai là giá gốc đã giảm -->
+                        <span class="text-gray-400 line-through ml-2">{{ course.price | number:'1.0-0' }} ₫</span>
+                    </div>
+                    <div class="flex items-center mb-2" *ngIf="course.discountPrice <= 0">
+                        <span class="text-lg font-bold text-red-500">{{ course.price  | number:'1.0-0' }} ₫</span>
+
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="page mt-10 flex justify-center">
+        <div class="px-5 flex justify-center max-w-[600px]  gap-1 flex-wrap">
+            <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn  rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(1)">
+                <i class="fa-solid fa-forward-fast fa-rotate-180"></i>
+            </button>
+            <ng-container *ngFor="let page of visiblePages">
+                <button class="py-1 px-[16px] text-active-btn font-semibold  border border-active-btn  rounded-sm shadow-gray-400 shadow-md"
+                        [ngClass]="{'bg-active-btn text-text-white': courseQuery.page==page, 'hover:bg-gray-300': courseQuery.page!=page}"
+                        (click)="pageChange(page)"
+                >
+                    {{ page }}
+                </button>
+            </ng-container>
+            <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(totalPages)">
+                <i class="fa-solid fa-forward-fast"></i>
+            </button>
+
+        </div>
+    </div>
+</div>

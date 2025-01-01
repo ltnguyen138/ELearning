@@ -1,0 +1,86 @@
+<div class=" mt-10  px-3 text-text-color mb-10 relative bg ">
+    <div class="grid xl:grid-cols-4 lg:grid-cols-3 gap-3">
+        <div class="xl:col-span-3 lg:col-span-2 bg-black  flex items-center justify-center h-[540px] " >
+            <router-outlet></router-outlet>
+        </div>
+        <div class=" hidden lg:block lg:col-span-1  h-[540px] overflow-auto border-custom-gray border-2 shadow-md shadow-custom-gray">
+            <div class="mt-4   ">
+                <ng-container *ngFor="let chapter of chapters">
+                    <div class="py-3 px-4 border-b-[2px] border-custom-gray ">
+                        <app-learner-chapter [chapter]="chapter" [learnLectureComplate]="learnLectureComplate"></app-learner-chapter>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="grid xl:grid-cols-4 lg:grid-cols-3 gap-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white">
+        <div class="xl:col-span-3 lg:col-span-2   " >
+            <div class="flex  gap-x-10  text-link-color font-semibold text-[18px]  mt-5   border-t-2 border-b-2 border-custom-gray px-5 pt-5 ">
+                <a [routerLink]="[]"  class="lg:hidden  hover:text-link-color-h pb-3 whitespace-nowrap  flex px-2" [ngClass]="{'border-b-active-btn border-b-[2px]' :selectedTab=='list-lecture' }">Nội dung</a>
+                <a [routerLink]="[]" fragment="overview" class="hover:text-link-color-h pb-3 whitespace-nowrap border-b-black border-b-[2px] flex px-2" [ngClass]="{'border-b-active-btn border-b-[2px]' :selectedTab=='overview' }">Tổng quan</a>
+                <a [routerLink]="[]" fragment="review" class="hover:text-link-color-h pb-3 whitespace-nowrap border-b-black border-b-[2px] flex px-2" [ngClass]="{'border-b-active-btn border-b-[2px]' :selectedTab=='review' }">Đánh giá</a>
+                <a [routerLink]="[]" fragment="questions" class="hover:text-link-color-h pb-3 whitespace-nowrap border-b-black border-b-[2px] flex px-2" [ngClass]="{'border-b-active-btn border-b-[2px]' :selectedTab=='questions' }">Hỏi đáp</a>
+                <a [routerLink]="[]" fragment="note" class="hover:text-link-color-h pb-3 whitespace-nowrap border-b-black border-b-[2px] flex px-2" [ngClass]="{'border-b-active-btn border-b-[2px]' :selectedTab=='note' }">Ghi chú</a>
+            </div>
+
+
+
+        </div>
+    </div>
+    <div>
+        <div class="mt-4   lg:hidden block  overflow-auto border-custom-gray border-2 shadow-md shadow-custom-gray" *ngIf="selectedTab=='list-lecture'" @slideToggle>
+            <div class="">
+                <ng-container *ngFor="let chapter of chapters">
+                    <div class="py-3 px-4 border-b-[1px] border-custom-gray ">
+                        <app-learner-chapter [chapter]="chapter"></app-learner-chapter>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="mt-4 lg:pl-10 pl-3" *ngIf="selectedTab=='overview'" @slideToggle>
+            <div class="">
+                <h1>{{currenCourse?.name}}</h1>
+                <p class="text-[14px]" *ngIf="currenCourse">Cấp độ: {{getSkillLevel(currenCourse!.skillLevel)}}</p>
+            </div>
+            <div class=" text-base text-text-color mt-6 flex gap-x-10 flex-wrap gap-y-3 font-semibold">
+                <span class="flex gap-3 items-center text-base"> <i class="fa-regular fa-user " ></i> {{currenCourse?.instructor?.fullName}}</span>
+                <span class="flex gap-2 items-center text-base">
+                            <app-rating-star [rating]="currenCourse ? currenCourse.averageRating : 0"></app-rating-star>
+                            <span class="">({{currenCourse?.ratingCount}} đánh giá)</span>
+                        </span>
+                <span class="flex gap-2 items-center text-base">
+                            <i class="fa-regular fa-clock"></i>
+                            <span class="">Lần sửa đổi cuối {{currenCourse?.updatedTime}}</span>
+                         </span>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-x-5">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-circle  text-[5px]"></i>Số lượng học viên: {{currenCourse?.purchasedCount}}</span>
+                <span class="flex items-center gap-1"><i class="fa-solid fa-circle  text-[5px]"></i> {{lectureCount}} Bài giảng</span>
+            </div>
+            <div class="mt-8 ">
+                <p class="font-semibold text-[20px]">Mô tả khóa học</p>
+                <p class="text-text-color mt-2">{{currenCourse?.description}}</p>
+            </div>
+            <div class="mt-8 ">
+                <p class="font-semibold text-[20px]">Giảng viên</p>
+                <div class="mt-3 flex  flex-wrap gap-5">
+                    <img [src]="environment.profilePictureApi+currenCourse?.instructor?.profilePicture" class="w-[100px] h-[100px] rounded-full object-cover border-custom-gray border-2">
+                    <div>
+                        <h3 class="text-xl font-semibold text-active-btn hover:text-active-btn-h"><a routerLink="/user/{{currenCourse?.instructor?.id}}">{{currenCourse?.instructor?.fullName}}</a></h3>
+                        <p class="text-base">{{currenCourse?.instructor?.title}}</p>
+                    </div>
+                </div>
+                <p class="mt-3 text-text-color">{{currenCourse?.instructor?.bio}}</p>
+            </div>
+        </div>
+        <div class="mt-4 lg:pl-10 pl-3" *ngIf="selectedTab=='review'" @slideToggle>
+            <app-review [course]="currenCourse" [isPurchase]="true"  ></app-review>
+        </div>
+        <div class="mt-4 lg:pl-10 pl-3" *ngIf="selectedTab=='questions'" @slideToggle>
+            <app-question-answers [course]="currenCourse" [lectureId]="lectureId" ></app-question-answers>
+        </div>
+        <div class="mt-4 lg:pl-10 pl-3" *ngIf="selectedTab=='note'" @slideToggle>
+            <app-note ></app-note>
+        </div>
+    </div>
+</div>

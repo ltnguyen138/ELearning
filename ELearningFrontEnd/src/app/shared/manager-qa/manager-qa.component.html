@@ -1,0 +1,128 @@
+<div class="max-w-[1200px] flex mx-auto gap-x-10 min-h-[1200px]" >
+
+    <div class="flex-1 ">
+
+        <div class=" max-w-[1000px] min-w-[500px] overflow-x-auto  mx-auto mt-5 px-2">
+
+            <div class="mt-3 flex flex-wrap gap-x-14 gap-y-5 border-b-[2px]  py-5   items-center">
+                <div class="search">
+                    <input type="text"
+                           class="
+                        header-search-input
+                        w-[240px]
+                        rounded-xl
+                        rounded-r-none
+                        p-2.5
+                        px-1.5
+                        shadow-sm
+                        border-2
+                        border-r-0
+                        border-custom-gray
+                        text-base placeholder:text-gray-500
+                        focus:outline-0
+                   "
+                           placeholder="Tìm kiếm ..." name="keywork" [(ngModel)]="keywords"
+
+                    />
+                    <button class="header-search-btn bg-active-btn py-2.5 px-4 rounded-r-xl border-2 border-l-0 border-custom-gray hover:bg-active-btn-h" (click)="searchQuestions()">
+                        <i class="fa-solid fa-magnifying-glass  fa-lg" style="color: #f2f2f2;"></i>
+                    </button>
+                </div>
+                <div>
+                    <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                            [(ngModel)]="lectureIdFilter"
+                            (change)="changeFilterByLectureId()"
+                    >
+                        <option  [value]="-1">Tất cả bài giảng</option>
+                        <option [value]="lectureId">Bài giảng hiện tại  </option>
+                    </select>
+                </div>
+                <div>
+                    <button class=" text-delete-btn font-semibold bg-white hover:bg-gray-300" (click)="clearFilter()">
+                        Xóa Bộ lọc
+                    </button>
+                </div>
+
+            </div>
+
+
+            <div>
+                <div class="flex justify-between items-center flex-wrap">
+                    <h2 *ngIf="lectureIdFilter != -1" class="text-[20px] mt-5">Có tất cả {{this.totalQuestions}} câu hỏi <span *ngIf="searchKey !=''">chứa từ khóa "{{searchKey}}"</span> trong bài giảng này</h2>
+                    <h2 *ngIf="lectureIdFilter == -1" class="text-[20px] mt-5">Có tất cả {{this.totalQuestions}} câu hỏi  <span *ngIf="searchKey !=''">chứa từ khóa "{{searchKey}}"</span> trong khóa học này</h2>
+                    <button class="py-2 px-10 bg-active-btn text-text-white hover:bg-active-btn-h mt-5 rounded-md" *ngIf="lectureId" (click)="isShowQuestionForm = !isShowQuestionForm">
+                        Thêm câu hỏi
+                    </button>
+                </div>
+                <div class="mt-5" *ngIf="isShowQuestionForm" @slideToggle >
+                    <form [formGroup]="questionForm">
+
+                        <div class="mt-3">
+                            <label class="text-[16px] font-semibold">Nội dung câu hỏi</label>
+                            <textarea class="w-full border-2 border-custom-gray rounded-md p-2.5 mt-3 " formControlName="content"></textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="py-1.5 px-5 bg-active-btn text-text-white hover:bg-active-btn-h mt-1 rounded-md" (click)="createQuestion()">
+                                Lưu câu hỏi
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="mt-3">
+                    <ng-container *ngFor="let question of questions, let i = index">
+                        <app-shared-question [question]="question" [index]="i" [lectureId]="lectureId" (deleteQuestion)="deleteQuestion($event)" (deleteByAdmin)="openAdminDeleteModal($event)"></app-shared-question>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="page mt-10 flex justify-center" *ngIf="questions.length > 0">
+                <div class="px-5 flex justify-center max-w-[600px]  gap-1 flex-wrap">
+                    <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn  rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(1)">
+                        <i class="fa-solid fa-forward-fast fa-rotate-180"></i>
+                    </button>
+                    <ng-container *ngFor="let page of visiblePages">
+                        <button class="py-1 px-[16px] text-active-btn font-semibold   border border-active-btn  rounded-sm shadow-gray-400 shadow-md"
+                                [ngClass]="{'bg-active-btn text-text-white ': questionQuery.page==page , 'hover:bg-gray-300': questionQuery.page!=page}"
+                                (click)="pageChange(page)"
+                        >
+                            {{ page }}
+                        </button>
+                    </ng-container>
+                    <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(totalPages)">
+                        <i class="fa-solid fa-forward-fast"></i>
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="w-[35%] min-w-[260px] bg-white rounded-md shadow-md shadow-custom-gray max-h-[666px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white">
+        <div class="mt-4 pb-5">
+            <ng-container *ngFor="let chapter of chapters, let i = index" >
+                <div class="py-3 pl-3 pr-3 border-b-[1px] border-custom-gray">
+                    <app-shared-chapter [chapter]="chapter" [index]="i"></app-shared-chapter>
+                </div>
+            </ng-container>
+        </div>
+
+    </div>
+
+
+</div>
+
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.3)] flex items-center justify-center" *ngIf="isOpenAdminDeleteModal">
+    <div class="bg-white p-5 rounded-md shadow-gray-400 shadow-md w-[700px]">
+        <h2 class="text-center">Xóa đánh giá</h2>
+        <form [formGroup]="adminDeleteForm">
+            <div class="mt-5">
+                <label  class="block text-base font-[600] mt-15 ">Lý do xóa đánh giá</label>
+                <textarea formControlName="reason" class="w-full h-[100px] border-custom-gray border-2 shadow-gray-400 shadow-md mt-5 p-5"></textarea>
+            </div>
+            <div class="acction-btn mt-10 flex justify-center gap-10">
+                <button class="py-2.5 px-14 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="deleteByAdmin()" >Xóa</button>
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" (click)="isOpenAdminDeleteModal = !isOpenAdminDeleteModal;  deleteId=0" >Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>

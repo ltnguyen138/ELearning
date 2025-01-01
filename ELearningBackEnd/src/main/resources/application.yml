@@ -1,0 +1,51 @@
+server:
+    port: 8080
+spring:
+    application:
+        name: ELearningBackEnd
+    datasource:
+        password: ${POSTGRESDB_ROOT_PASSWORD:000889}
+        username: ${POSTGRESDB_USER:ltnguyen}
+        url: jdbc:postgresql://${POSTGRESDB_HOST:localhost}:${POSTGRESDB_DOCKER_PORT:5432}/${POSTGRESDB_DATABASE:ELearningDB}
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: ''
+                format_sql: true
+                jdbc:
+                    lob:
+                        non_contextual_creation: true
+        show-sql: false
+    mvc:
+        pathmatch:
+            matching-strategy: ANT_PATH_MATCHER
+    servlet:
+        multipart:
+            max-file-size: 1500MB
+            max-request-size: 1500MB
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: 87133212216-fsl52nkagntsbpgi655723hv84a2197o.apps.googleusercontent.com
+                        client-secret: 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
+    data:
+        redis:
+            host: localhost
+            port: 6379
+
+jwt:
+    expiration: 2592000 #30 days = 30 * 24 * 60 * 60
+amazonProperties:
+    region: ap-southeast-1
+    bucketName: elearning-files-13082
+    accessKey: accessKey
+    secretKey: secretKey
+    endpointUrl: https://elearning-files-13082.s3.ap-southeast-1.amazonaws.com
+paypal:
+    client-id: client-id
+    client-secret: client-secret
+    mode: sandbox

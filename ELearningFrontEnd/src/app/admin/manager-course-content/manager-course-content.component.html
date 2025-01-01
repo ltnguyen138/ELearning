@@ -1,0 +1,24 @@
+<div class=" mt-10  px-3 text-text-color mb-10 relative bg ">
+    <div class="flex gap-x-10 flex-col lg:flex-row">
+        <div class="flex-1 max-w-full bg-black max-h-[540px]">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="shrink-0 lg:w-[360px] w-full border-custom-gray border-2 shadow-custom-gray shadow-md max-h-[700px] overflow-y-auto">
+            <div class="p-2.5 mx-auto">
+                <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    [(ngModel)]="approvalStatus"
+                >
+                    <option [value]="''">Tất cả trạng thái kiểm duyệt</option>
+                    <option  [value]="ApprovalStatusEnum.PENDING">Đang chờ duyệt</option>
+                    <option  [value]="ApprovalStatusEnum.APPROVED">Đã duyệt</option>
+                    <option  [value]="ApprovalStatusEnum.REJECTED">Không được duyệt</option>
+                </select>
+            </div>
+            <ng-container *ngFor="let chapter of chapters">
+                <div class="py-3  border-b-[1px] border-custom-gray ">
+                    <app-manager-chapter [chapter]="chapter" [approvalStatus]="approvalStatus"></app-manager-chapter>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

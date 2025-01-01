@@ -1,0 +1,52 @@
+<div class="py-3  border-gray-700 border-b-[2px] bg-gray-100">
+    <div class="px-4">
+        <span class="block  font-semibold">Bài {{index +1}}:</span>
+    </div>
+    <div class="py-3 px-4 flex justify-between items-start    hover:text-active-btn-h hover:bg-border-color cursor-pointer" (click)="navigatorLinkConten()">
+        <div class="flex gap-3  flex-shrink-0 flex-1 items-start">
+            <div class="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-green-700 shrink-0" title="Bài giảng đã được phê duyệt" *ngIf="lecture.approvalStatus == ApprovalStatusEnum.APPROVED">
+                <i class="fa-solid fa-check text-white"></i>
+            </div>
+            <div class="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-gray-600 shrink-0" title="Bài giảng đang chờ phê duyệt" *ngIf="lecture.approvalStatus == ApprovalStatusEnum.PENDING">
+                <i class="fa-solid fa-check text-white"></i>
+            </div>
+            <div class="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-delete-btn shrink-0" title="Bài giảng không được phê duyệt" *ngIf="lecture.approvalStatus == ApprovalStatusEnum.REJECTED">
+                <i class="fa-solid fa-x text-white"></i>
+            </div>
+            <span class="text-wrap block">{{lecture.name}}</span>
+        </div>
+        <div class="flex items-center gap-x-1">
+            <i class="fa-regular fa-clock"></i>
+            <span>{{lecture.videoDuration}} phút</span>
+        </div>
+    </div>
+    <div class=" p-1.5 flex justify-end border-custom-gray border-b-[1px]" *ngIf="lecture.resourceUrl">
+        <div class="flex gap-3  items-center  text-[16px] border-[1px] border-gray-700 py-1 px-1.5 cursor-pointer" (click)="downloadS3Doc(lecture.id)">
+            <i class="fa-solid fa-folder-open"></i>
+            <span class="text-active-btn-h shrink-0 " >Tài nguyên</span>
+        </div>
+    </div>
+    <div class="flex gap-5 flex-wrap mt-5 justify-center">
+        <div>
+
+        </div>
+        <button class="py-1.5 px-4  text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md disabled:bg-gray-300 disabled:text-text-color" [disabled]="lecture.approvalStatus == ApprovalStatusEnum.APPROVED" (click)="approval()">Phê duyệt</button>
+        <button class="py-1.5 px-4 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md disabled:bg-gray-300 disabled:text-text-color" [disabled]="lecture.approvalStatus == ApprovalStatusEnum.REJECTED" (click)="isOpenRejectModal = !isOpenRejectModal" >Từ chối</button>
+
+    </div>
+</div>
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.3)] flex items-center justify-center" *ngIf="isOpenRejectModal">
+    <div class="bg-white p-5 rounded-md shadow-gray-400 shadow-md w-[700px]">
+        <h2 class="text-center">Từ chối khóa học</h2>
+        <form [formGroup]="approvalForm">
+            <div class="mt-5">
+                <label  class="block text-base font-[600] mt-15 ">Lý do từ chối</label>
+                <textarea formControlName="comment" class="w-full h-[100px] border-custom-gray border-2 shadow-gray-400 shadow-md mt-5 p-5"></textarea>
+            </div>
+            <div class="acction-btn mt-10 flex justify-center gap-10">
+                <button class="py-2.5 px-14 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="reject()" >Từ chối</button>
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" (click)="isOpenRejectModal = !isOpenRejectModal" >Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>

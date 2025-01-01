@@ -1,0 +1,118 @@
+<div class=" mt-10 md:w-[90%] md:max-w-[1400px]  mx-auto px-2 text-text-color mb-10 relative bg">
+    <div class="title border-b-[2px] border-border-color pb-5 text-center">
+        <h1 class="leading-relaxed">Danh sách đơn hàng của bạn</h1>
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-x-10 gap-y-5 border-b-[2px]  py-5  px-2">
+        <div class="search">
+            <input type="text"
+                   class="
+                        header-search-input
+                        w-[200px]
+                        rounded-xl
+                        rounded-r-none
+                        p-2.5
+                        px-1.5
+                        shadow-sm
+                        border-2
+                        border-r-0
+                        border-custom-gray
+                        text-base placeholder:text-gray-500
+                        focus:outline-0
+                   "
+                   placeholder="Tìm kiếm ..." name="keywork"
+                   [(ngModel)]="keyword"
+                   (keydown.enter)="onSearch()"
+            />
+            <button class="header-search-btn bg-active-btn py-2.5 px-4 rounded-r-xl border-2 border-l-0 border-custom-gray hover:bg-active-btn-h" (click)="onSearch()">
+                <i class="fa-solid fa-magnifying-glass  fa-lg" style="color: #f2f2f2;"></i>
+            </button>
+        </div>
+        <div>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    (change)="onStatusFilterChange($event)"
+                    [(ngModel)]="orderStatusFilter"
+            >
+                <option [value]="''">Tất cả trạng thái</option>
+                <ng-container *ngFor="let status of orderStatus">
+                    <option [value]="status.key">{{ status.value }}</option>
+                </ng-container>
+
+            </select>
+        </div>
+
+    </div>
+
+    <div class="mt-10">
+
+        <div class="overflow-x-auto mt-5 shadow-gray-400 shadow-md border-[2px] border-border-color ">
+
+            <table class="min-w-[1000px] w-full bg-white border border-gray-300 ">
+                <thead>
+                <tr class="bg-primary-color text-text-white uppercase text-base">
+                    <th class="py-3 px-6 w-1/12 text-center border border-white">Mã</th> <!-- Cột chiếm 1/4 độ rộng -->
+                    <th class="py-3 px-6 w-1/4 text-center border border-white">Khóa học</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Trạng thái</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Giá tiền</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white"></th> <!-- Cột chiếm 1/6 độ rộng -->
+                </tr>
+                </thead>
+                <tbody class=" text-base font-light">
+
+                <ng-container *ngFor="let order of orders, let i = index">
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="p-3 border border-slate-300  text-center whitespace-nowrap">
+                            {{ order.id }}
+                        </td>
+                        <td class="p-3 border border-slate-300  px-6 text-left ">
+                            <ng-container *ngFor="let orderDetail of order.orderDetails">
+                                <div class="flex  flex-col gap-y-6">
+
+                                    <div class="flex  items-center gap-x-2">
+                                        <i class="fa-solid fa-circle  text-[5px]"></i>
+                                        <div>{{ orderDetail.course.name }}</div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </td>
+                        <td class="p-3 border border-slate-300  px-6 text-left whitespace-nowrap">{{ getOrderStatus(order.status) }}</td>
+                        <td class="p-3 border border-slate-300  px-6 text-center whitespace-nowrap">{{ order.finalAmount | number:'1.0-0' }} đ</td>
+
+                        <td class="p-3 border border-slate-300  px-6 text-center whitespace-nowrap">
+                            <div class="flex justify-center">
+                                <button class="bg-active-btn-h hover:bg-active-btn-h text-white px-5 py-2 rounded block"
+                                        (click)="router.navigate(['/orders/', order.id])"
+                                >
+                                    Xem chi tiết
+                                </button>
+                            </div>
+
+                        </td>
+                    </tr>
+
+                </ng-container>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="page mt-10 flex justify-center">
+            <div class="px-5 flex justify-center max-w-[600px]  gap-1 flex-wrap">
+                <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn  rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(1)">
+                    <i class="fa-solid fa-forward-fast fa-rotate-180"></i>
+                </button>
+                <ng-container *ngFor="let page of visiblePages">
+                    <button class="py-1 px-[16px] text-active-btn font-semibold  border border-active-btn  rounded-sm shadow-gray-400 shadow-md"
+                            [ngClass]="{'bg-active-btn text-text-white': orderQuery.page==page, 'hover:bg-gray-300': orderQuery.page!=page}"
+                            (click)="pageChange(page)"
+                    >
+                        {{ page }}
+                    </button>
+                </ng-container>
+                <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(totalPages)">
+                    <i class="fa-solid fa-forward-fast"></i>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="mt-5">
+    <div class="  border-b-2 border-border-color px-2  cursor-pointer">
+        <div class="flex gap-x-5 flex-wrap mt-3 pb-1">
+            <div class="w-[55px] h-[55px] ">
+                <img [src]="environment.profilePictureApi+questionAnswer.user.profilePicture" class="rounded-full h-full w-full object-cover border-[1px] border-custom-gray shadow-md shadow-custom-gray">
+            </div>
+            <div class="flex-1 bg-gray-100  p-2 rounded-md flex items-center ">
+                <div class="  flex-1 ">
+                    <h2>{{questionAnswer.user.fullName}}</h2>
+
+                    <div class="mt-1 w-full">
+                        <div class=" line-clamp-2" #textContent [ngClass]="{ 'line-clamp-none': showFullText }">
+                            {{ questionAnswer.content }}
+                        </div>
+
+                        <button *ngIf="isClamped" class="text-active-btn text-[14px]" (click)="toggleText()">
+                            {{ showFullText ? 'Ẩn bớt' : 'Đọc tiếp' }}
+                        </button>
+                    </div>
+
+                    <div class="mt-2 w-full flex gap-x-10">
+                        <span class="text-[14px] flex items-center text-active-btn hover:text-active-btn-h" *ngIf="answers.length > 0" (click)="isShowAnswer = !isShowAnswer">Xem phản hồi</span>
+                        <span class="text-[14px] flex items-center text-red-500 hover:text-red-600" *ngIf="isQuestion" (click)="onDeleteQuestionAnswer(questionAnswer.id)">Xóa</span>
+                        <span class="text-[14px] flex items-center text-red-500 hover:text-red-600" *ngIf="!isQuestion" (click)="onDeleteAnswer(questionAnswer.id)">Xóa</span>
+
+                        <span class="text-[14px] flex items-center">{{questionAnswer.createdTime}}</span>
+                    </div>
+                </div>
+                <div class="min-w-[55px] flex justify-end items-center" *ngIf="isQuestion">
+                    <i class="fa-regular fa-message"></i>
+                    <span class="ml-2">{{questionAnswer.answers.length}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-b-2 border-border-color px-2 cursor-pointer w-[95%] ml-[5%]" *ngIf="isShowAnswer" @slideToggle>
+        <ng-container *ngFor="let answer of answers">
+            <app-question-answer [questionAnswer]="answer" (deleteAnswer)="onDeleteQuestionAnswer($event)"></app-question-answer>
+        </ng-container>
+    </div>
+</div>

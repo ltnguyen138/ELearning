@@ -1,0 +1,68 @@
+
+<div class="mt-5 border-[1px] border-neutral-400 py-5 px-3 bg-gray-100">
+    <div class="flex justify-between flex-wrap gap-x-10 gap-y-5 " *ngIf="!isOpenChapterForm" >
+        <div class="flex gap-x-10 gap-y-5  flex-wrap"   >
+
+            <span class="font-semibold">Chương {{index}}:  </span>
+            <span class="font-semibold"> {{chapter.name}}</span>
+            <button (click)="toggleChapterForm()" class="cursor-pointer hover:text-active-btn">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+            <button (click)="onRemoveChapter()" class="cursor-pointer hover:text-delete-btn">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+        <button class="hover:text-active-btn" (click)="toggleDisplayListLecture()">
+            <i *ngIf="isShowListLecture" class="fa-solid fa-angle-down"></i>
+            <i *ngIf="!isShowListLecture" class="fa-solid fa-angle-up"></i>
+        </button>
+    </div>
+
+    <div class="w-full md:w-[80%]" *ngIf="isOpenChapterForm" >
+
+        <form [formGroup]="chapterForm">
+            <div class="flex gap-10  items-center ">
+                <label class="font-semibold whitespace-nowrap">Chương {{index}}:  </label>
+                <input id="name" name="name" type="text"
+                       class="
+                               block
+                               p-1.5
+                               w-full
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                       formControlName="name"
+                >
+            </div>
+
+            <div class="flex justify-end  gap-5 mt-3">
+                <button class="py-1.5 px-14 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="saveChapter()" >Lưu</button>
+                <button class="py-1.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" *ngIf="chapter.id!==null" (click)="toggleChapterForm()">Hủy</button>
+                <button class="py-1.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" *ngIf="chapter.id===null" (click)="onRemoveChapter()">Hủy</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="mt-14 px-3" *ngIf="isShowListLecture" @slideToggle  cdkDropList (cdkDropListDropped)="drop($event)">
+        <ng-container *ngFor="let lecture of lectures, let i = index" >
+            <div cdkDrag *ngIf="lecture.id != null">
+                <app-instructor-lecture [lecture]="lecture" [index]="i"  (removeLecture)="deleteLecture($event)"  ></app-instructor-lecture>
+            </div>
+            <div  *ngIf="lecture.id == null">
+                <app-instructor-lecture [lecture]="lecture" [index]="i"  (removeLecture)="deleteLecture($event)" (newLecture)="newLecture($event)" ></app-instructor-lecture>
+            </div>
+        </ng-container>
+        <div class="mt-5">
+            <button class="py-2.5 px-14 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="addLecture()">Thêm bài</button>
+        </div>
+    </div>
+</div>
+
+<div class="fixed inset-0  bg-[rgba(12,12,12,0.01)] flex items-center justify-center " *ngIf="isLoaded">
+    <div class=" top-[2px] left-[48%]" >
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-blue-600"></div>
+    </div>
+</div>

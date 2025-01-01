@@ -1,0 +1,37 @@
+<div class=" mt-5 w-full max-w-[1500px]  mx-auto px-2 text-text-color mb-10 relative pb-[80px]">
+
+    <div class="title border-b-[2px] border-border-color pb-5 text-center">
+        <h1 class="text-[22px]">Lịch sử rút tiền</h1>
+    </div>
+
+    <div class="overflow-x-auto border-custom-gray border shadow-md shadow-custom-gray mt-5">
+        <table class="min-w-[1200px] w-full bg-white border border-gray-300 ">
+            <thead>
+            <tr class="bg-primary-color text-text-white uppercase text-base">
+                <th class="py-3 px-6 w-1/6 text-center border border-white">Thời gian giao dịch</th>
+                <th class="py-3 px-6 w-1/6 text-center border border-white">Mã giao dịch</th>
+                <th class="py-3 px-6 w-1/6 text-center border border-white">Số tiền</th>
+            </tr>
+            </thead>
+            <tbody class="text-gray-600 text-base font-light">
+            <ng-container *ngFor="let payoutHistory of payoutHistorys">
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="p-3 border border-slate-300  text-center whitespace-nowrap">
+                        {{ payoutHistory.payoutDate }}
+                    </td>
+                    <td class="p-3 border border-slate-300  text-center whitespace-nowrap">
+                        {{ payoutHistory.payoutId }}
+                    </td>
+                    <td class="p-3 border border-slate-300  text-center whitespace-nowrap">
+                        {{ roundAndFormatNumber(payoutHistory.amount) }}
+                    </td>
+            </ng-container>
+            </tbody>
+        </table>
+    </div>
+    <div class="last-payout-info flex items-center space-x-2 p-4 rounded-md shadow-sm justify-end text-[18px]">
+        <label class="font-semibold text-text-color">Tổng số tiền đã rút:</label>
+        <span class="text-green-600 font-semibold" >{{ roundAndFormatNumber(totalPayout) }}</span>
+
+    </div>
+</div>

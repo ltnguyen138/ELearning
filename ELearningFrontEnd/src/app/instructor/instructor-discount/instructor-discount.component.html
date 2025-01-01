@@ -1,0 +1,57 @@
+
+<router-outlet></router-outlet>
+<div class="mt-5 mx-auto shadow-gray-400 shadow-md border-[2px] border-border-color bg-white p-4 md:p-10 max-w-[1400px] ">
+    <div class="">
+        <h2 class="text-center">Danh sách mã giảm giá</h2>
+    </div>
+
+    <div class="mt-5">
+        <div class="flex flex-wrap gap-x-10 gap-y-5 border-b-[2px]  py-5  px-2">
+            <div class="">
+                <button class="py-2.5 px-10 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md" (click)="redirectToAddDiscountForm()">Thêm mới</button>
+            </div>
+        </div>
+        <div class="overflow-x-auto  mt-5 shadow-gray-400 shadow-md border-[2px] border-border-color " *ngIf="discounts.length>0">
+            <table class="min-w-[1200px] w-full bg-white border border-gray-300 ">
+                <thead>
+                <tr class="bg-primary-color text-text-white uppercase text-base">
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Mã giảm giá</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Tỉ lệ giảm(%)</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Ngày bắt đầu</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Ngày kết thúc</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Số lượng</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Trạng thái</th>
+                    <th class="py-3 px-6 w-1/5 text-center border border-white"></th>
+                </tr>
+                </thead>
+                <tbody class="text-gray-600 text-base font-light">
+                <ng-container *ngFor="let discount of discounts, let i = index">
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="p-3 border border-slate-300  text-center whitespace-nowrap">
+                            {{ discount.code }}
+                        </td>
+                        <td class="p-3 border border-slate-300  px-6 text-center whitespace-nowrap">{{ discount.discount }}</td>
+                        <td class="p-3 border border-slate-300  px-6 text-center whitespace-nowrap ">{{ discount.validFrom  }}</td>
+                        <td class="p-3 border border-slate-300  px-6 text-center whitespace-nowrap">{{ discount.validTo }}</td>
+                        <td class="p-3 border border-slate-300  px-6 text-center whitespace-nowrap">{{ discount.quantity ? discount.quantity : 'Vô hạn' }}</td>
+                        <td class="p-3 border border-slate-300  px-6 text-left whitespace-nowrap">
+                            <button class="w-[36px] h-[36px] mx-auto bg-delete-btn-h flex justify-center items-center rounded-full shadow-gray-400 shadow-md "
+                                    [ngClass]="{'bg-green-700 hover:bg-green-800': discount.activated, 'bg-gray-500 hover:bg-custom-gray': !discount.activated}"
+                                    (click)="toggleDiscount(discount.id, i)"
+                            >
+                                <i class="fa-solid fa-check text-white fa-xl"></i>
+                            </button>
+                        </td>
+                        <td class="p-3  text-center border border-slate-300 whitespace-nowrap ">
+                            <button class="py-2 mr-3 px-5 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md" (click)="redirectToEditDiscountForm(discount.id)">Sửa</button>
+                            <button class="py-2 px-5 text-white font-semibold bg-red-500 hover:bg-red-600  rounded-md shadow-gray-400 shadow-md" (click)="deleteDiscount(discount.id)">Xóa</button>
+                        </td>
+                </ng-container>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-5 flex justify-center" *ngIf="discounts.length==0">
+            <p>Khóa học hiện tại không có mã giảm giá</p>
+        </div>
+    </div>
+</div>

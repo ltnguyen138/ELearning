@@ -1,0 +1,6 @@
+<div class="p-4 flex items-center justify-center h-full" >
+    <video #videoPlayer class="max-h-[540px]" controls controlslist="nodownload" (contextmenu)="disableContextMenu($event)" *ngIf="videoUrl">
+        <source [src]="videoUrl" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>

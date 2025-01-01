@@ -1,0 +1,243 @@
+<div class=" mt-5 w-full max-w-[1500px]  mx-auto px-2 text-text-color mb-10 relative pb-[80px]">
+    <div class="title border-b-[2px] border-border-color pb-5 flex justify-between items-center">
+        <h1 class="">Thống kê thu nhập của giảng viên {{instructor?.fullName}}</h1>
+        <a class="text-active-btn hover:text-active-btn-h rounded-md font-semibold" [routerLink]="['/admin/users']">Quay lại</a>
+    </div>
+    <div class="mt-5">
+        <div class="p-6 bg-gray-50 rounded-lg shadow-md border border-gray-300">
+            <div class="mb-5 flex justify-between items-center">
+                <span class="font-semibold text-lg">Thông tin giảng viên:</span>
+            </div>
+            <ul class="space-y-3 text-gray-800">
+                <li class="flex justify-start">
+                    <span class="font-semibold w-[160px]">Họ và tên:</span>
+                    <span class="font-semibold  text-black px-2 py-1">{{instructor?.fullName}}</span>
+                </li>
+                <li class="flex justify-start">
+                    <span class="font-semibold w-[160px]">Email:</span>
+                    <span class="font-semibold  text-black px-2 py-1">{{instructor?.email}}</span>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+    <div class="mt-5">
+        <div class="p-6 bg-gray-50 rounded-lg shadow-md border border-gray-300">
+            <div class="mb-5 flex justify-between items-center">
+                <span class="font-semibold text-lg">Thống kê khóa học:</span>
+                <a class="text-active-btn hover:text-active-btn-h rounded-md font-semibold" [routerLink]="['/admin/courses']" [queryParams]="{instructorId: instructorId}">Xem chi tiết</a>
+            </div>
+            <ul class="space-y-3 text-gray-800">
+                <li class="flex justify-start">
+                    <span class="font-semibold w-[160px]">Tổng số khóa học:</span>
+                    <span class="font-semibold bg-green-200 text-black px-2 py-1">{{totalCourse}}</span>
+                </li>
+                <li class="flex justify-start">
+                    <span class="font-semibold w-[160px]">Tổng lượt mua:</span>
+                    <span class="font-semibold bg-blue-100 text-black px-2 py-1">{{countPublishedCourse}}</span>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class=" flex flex-wrap gap-x-10 gap-y-5   py-8  px-2 items-center border-b-[2px] border-border-color">
+
+        <div class="flex items-center space-x-2">
+            <span>Thời gian:</span>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    (change)="changeTimeLine()"
+                    [(ngModel)]="timeLine"
+            >
+                <option [value]="'today'">Hôm nay</option>
+                <option [value]="'7day'">Trong vòng 7 ngày</option>
+                <option  [value]="'30day'">Trong tháng</option>
+                <option  [value]="'year'">Trong năm </option>
+                <option  [value]="'customDay'">Tùy chọn theo ngày</option>
+                <option  [value]="'customMonth'">Tùy chọn theo tháng</option>
+                <option  [value]="'customYear'">Tùy chọn theo năm</option>
+            </select>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span>Loại thống kê:</span>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    (change)="changStatisticType()"
+                    [(ngModel)]="typeStatistic"
+            >
+                <option [value]="'ORDER'">Theo đơn hàng</option>
+                <option  [value]="'COURSE'">Theo khóa học</option>
+                <option  [value]="'CATEGORY'">Theo chủ đề khóa học</option>
+
+            </select>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span>Trạng thái đơn hàng:</span>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    (change)="changeRefunded()"
+                    [(ngModel)]="refunded"
+            >
+                <option  [value]="'false'">Đơn đã thành công</option>
+                <option  [value]="'true'">Đơn hoàn tiền</option>
+
+            </select>
+        </div>
+    </div>
+    <div class="flex flex-wrap gap-x-5 gap-y-5 border-b-[2px]  py-5  px-2 items-center  border-border-color" *ngIf="isShowCustonmDate" @slideToggle>
+        <span>Từ:</span>
+        <p-calendar
+                class="block
+                                    w-[160px]
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                dateFormat="dd-mm-yy"
+                [(ngModel)]="startDate"
+                [maxDate]="maxDateStartDate"
+                (onSelect)="onstartDateSelect($event)"
+        >
+        </p-calendar>
+        <span>Đến:</span>
+        <p-calendar
+                class="block
+                                    w-[160px]
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                dateFormat="dd-mm-yy"
+                [maxDate]="maxDateEndDate"
+                [minDate]="minDateEndDate"
+                [(ngModel)]="endDate"
+        >
+
+        </p-calendar>
+        <button class="bg-active-btn text-white hover:bg-active-btn-h py-2.5 px-10 rounded-md" (click)="viewCustomTimeStatistic()">Xem</button>
+    </div>
+
+    <div class="flex flex-wrap gap-x-5 gap-y-5 border-b-[2px]  py-5  px-2 items-center  border-border-color" *ngIf="isShowCustomMonth" @slideToggle>
+        <span>Từ:</span>
+        <p-calendar
+                class="block
+                                    w-[160px]
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                dateFormat="mm-yy"
+                view="month"
+                [(ngModel)]="startDate"
+                [maxDate]="maxDateStartDate"
+                (onSelect)="onstartDateSelectMonth($event)"
+        >
+        </p-calendar>
+        <span>Đến:</span>
+        <p-calendar
+                class="block
+                                    w-[160px]
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                view="month"
+                dateFormat="mm-yy"
+                [maxDate]="maxDateEndDate"
+                [minDate]="minDateEndDate"
+                [(ngModel)]="endDate"
+        >
+
+        </p-calendar>
+        <button class="bg-active-btn text-white hover:bg-active-btn-h py-2.5 px-10 rounded-md" (click)="viewCustomTimeStatistic()">Xem</button>
+    </div>
+
+    <div class="flex flex-wrap gap-x-5 gap-y-5 border-b-[2px]  py-5  px-2 items-center  border-border-color" *ngIf="isShowCustomYear" @slideToggle>
+        <span>Từ:</span>
+        <p-calendar
+                class="block
+                                    w-[160px]
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                dateFormat="yy"
+                view="year"
+                [(ngModel)]="startDate"
+                [maxDate]="maxDateStartDate"
+                (onSelect)="onstartDateSelectYear($event)"
+        >
+        </p-calendar>
+        <span>Đến:</span>
+        <p-calendar
+                class="block
+                                    w-[160px]
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                view="year"
+                dateFormat="yy"
+                [maxDate]="maxDateEndDate"
+                [minDate]="minDateEndDate"
+                [(ngModel)]="endDate"
+        >
+
+        </p-calendar>
+        <button class="bg-active-btn text-white hover:bg-active-btn-h py-2.5 px-10 rounded-md" (click)="viewCustomTimeStatistic()">Xem</button>
+    </div>
+
+
+
+
+    <div class="p-5 mt-8 shadow-gray-400 shadow-md border-[2px] border-border-color " *ngIf="statisticReq.statisticType==StatisticTypeEnum.ORDER" @slideToggle>
+        <app-vertical-bar-statistic-type-order [statisticsData]="statistics" [title]="getTitle()" [minWidth]="charMinWidth"></app-vertical-bar-statistic-type-order>
+    </div>
+    <div class="p-5 mt-8 shadow-gray-400 shadow-md border-[2px] border-border-color " *ngIf="statisticReq.statisticType==StatisticTypeEnum.CATEGORY" @slideToggle>
+        <app-pie-statistic-type-category [statisticsData]="statistics" [title]="getTitle()" ></app-pie-statistic-type-category>
+    </div>
+    <div class="p-5 mt-8 shadow-gray-400 shadow-md border-[2px] border-border-color " *ngIf="statisticReq.statisticType==StatisticTypeEnum.COURSE" @slideToggle>
+        <app-grid-statistic-type-course [statisticsData]="statistics" [title]="getTitle()" [refunded] = "refunded" ></app-grid-statistic-type-course>
+    </div>
+    <div class="overflow-x-auto mt-14 shadow-gray-400 shadow-md border-[2px] border-border-color ">
+        <div class="my-5">
+            <h2 class="leading-relaxed text-center">{{getTableTitle()}}</h2>
+        </div>
+        <table class="min-w-[1300px] w-full bg-white border border-gray-300 ">
+            <thead>
+            <tr class="bg-primary-color text-text-white font-semibold text-[18px]">
+                <th class="py-3 px-6 text-center border border-white">Tổng giá gốc</th> <!-- Cột chiếm 1/4 độ rộng -->
+                <th class="py-3 px-6text-center border border-white">Tổng tiền giảm giá</th>
+                <th class="py-3 px-6 text-center border border-white" *ngIf="!statisticReq.refunded">Tổng doanh thu</th>
+                <th class="py-3 px-6 text-center border border-white" *ngIf="statisticReq.refunded">Tổng tiền hoàn</th>
+                <th class="py-3 px-6  text-center border border-white">Trung bình giá gốc</th>
+                <th class="py-3 px-6 text-center border border-white">Trung bình giảm giá</th>
+                <th class="py-3 px-6 text-center border border-white" *ngIf="!statisticReq.refunded">Trung bình doanh thu</th>
+                <th class="py-3 px-6 text-center border border-white" *ngIf="statisticReq.refunded">Trung bình số tiền hoàn</th>
+                <th class="py-3 px-6 text-center border border-white" *ngIf="statisticReq.statisticType == StatisticTypeEnum.ORDER && !statisticReq.refunded">Tổng đơn hàng</th> <!-- Cột chiếm 1/6 độ rộng -->
+                <th class="py-3 px-6 text-center border border-white" *ngIf="statisticReq.statisticType != StatisticTypeEnum.ORDER && !statisticReq.refunded">Số khóa học đã bán</th>
+                <th class="py-3 px-6 text-center border border-white" *ngIf="statisticReq.statisticType == StatisticTypeEnum.ORDER && statisticReq.refunded">Tổng đơn hàng hoàn tiền</th> <!-- Cột chiếm 1/6 độ rộng -->
+                <th class="py-3 px-6 text-center border border-white" *ngIf="statisticReq.statisticType != StatisticTypeEnum.ORDER && statisticReq.refunded">Số khóa học hoàn tiền</th>
+            </tr>
+            </thead>
+            <tbody class="text-text-color text-base font-light">
+            <tr>
+                <td class="py-3 px-6  text-center border border-custom-gray">{{ roundAndFormatNumber(totalPrice) }}</td>
+                <td class="py-3 px-6  text-center border border-custom-gray">{{ roundAndFormatNumber(totalDiscount) }}</td>
+                <td class="py-3 px-6 text-center border border-custom-gray">{{ roundAndFormatNumber(totalFinalPrice) }}</td>
+                <td class="py-3 px-6 text-center border border-custom-gray">{{ AvgPrice }}</td>
+                <td class="py-3 px-6 text-center border border-custom-gray">{{ AvgDiscount }}</td>
+                <td class="py-3 px-6  text-center border border-custom-gray">{{ AvgFinalPrice }}</td>
+                <td class="py-3 px-6  text-center border border-custom-gray" *ngIf="statisticReq.statisticType == StatisticTypeEnum.ORDER">{{ totalOrder }}</td>
+                <td class="py-3 px-6  text-center border border-custom-gray" *ngIf="statisticReq.statisticType != StatisticTypeEnum.ORDER">{{ totalCourse }}</td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="fixed inset-0  bg-[rgba(12,12,12,0.6)] flex items-center justify-center " *ngIf="isLoaded">
+    <div class=" top-[2px] left-[48%]" >
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-blue-600"></div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class=" mt-10 md:w-[90%] md:max-w-[800px]  mx-auto px-2 text-text-color mb-10 relative bg">
+    <div class="flex items-center bg-white rounded-lg shadow-md shadow-custom-gray border border-custom-gray p-4 mb-4">
+        <div class="flex-shrink-0">
+            <!-- Avatar -->
+            <div class=" h-16 w-16 ">
+                <img [src]="environment.profilePictureApi + loggedUser?.profilePicture" class="object-cover w-full h-full rounded-full border-custom-gray border-[2px] shadow-custom-gray shadow-md">
+            </div>
+        </div>
+        <div class="ml-4">
+            <p class="font-bold text-lg">Xin chào, {{ loggedUser?.fullName }}!</p>
+            <p class="text-gray-600">Chào Mừng Đến Với Trung Tâm CSKH</p>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+        <!-- Service 1 -->
+        <div class="bg-white rounded-lg  p-4 flex items-center justify-between shadow-md shadow-custom-gray border border-custom-gray cursor-pointer hover:bg-gray-200" (click)="chatLink()">
+            <div class="flex items-center">
+                <i class="fas fa-headphones-alt text-2xl text-gray-700"></i>
+                <div class="ml-4">
+                    <p class="font-bold">24/7 CSKH1</p>
+                    <p class="text-gray-600">Phục vụ 24/7</p>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="bg-white rounded-lg  p-4 flex items-center justify-between shadow-md shadow-custom-gray border border-custom-gray cursor-pointer hover:bg-gray-200">
+            <div class="flex items-center">
+                <i class="fas fa-headphones-alt text-2xl text-gray-700"></i>
+                <div class="ml-4">
+                    <p class="font-bold">24/7 CSKH2</p>
+                    <p class="text-gray-600">Phục vụ 24/7</p>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+        </div>
+    </div>
+
+    <router-outlet></router-outlet>
+</div>

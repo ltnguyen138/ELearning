@@ -1,0 +1,64 @@
+<div class="mt-5 shadow-md shadow-custom-gray border border-custom-gray w-full h-[500px] relative bg-gray-100" (click)="userRead()">
+
+    <div class="min-w-full min-h-full">
+        <div class="flex items-center justify-between w-full px-2 py-3 bg-white border-b-2 border-b-custom-gray">
+
+                <i class="fas fa-headphones-alt text-2xl text-gray-700"></i>
+                <div class="ml-4 flex-1 flex gap-x-3 items-center">
+                    <p class="font-bold">Khách hàng #</p>
+                    <i class="fa-solid fa-circle text-active-btn-h text-[14px]" *ngIf="!chatRoom?.userRead"></i>
+                </div>
+
+        </div>
+
+        <div #contentChat class="h-[380px]  w-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white pl-3 pr-5 relative pt-3" (scroll)="onScroll($event)">
+            <div class="absolute top-[2px] left-[48%]" *ngIf="isLoaded">
+                <div class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-600"></div>
+            </div>
+
+            <ng-container *ngFor="let message of chatMessages">
+                <ng-container *ngIf="message.type == ChatMessageTypeEnum.START">
+                    <div class="flex justify-center items-center mt-5">
+                        <p class="text-sm text-gray-600 font-semibold">Chat đã bắt đầu</p>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="message.sender.id == loggedUser?.id">
+                    <app-send-message [message]="message"></app-send-message>
+                </ng-container>
+
+                <ng-container *ngIf="message.sender.id != loggedUser?.id">
+                    <app-receive-message [message]="message"></app-receive-message>
+                </ng-container>
+
+                <ng-container *ngIf="message.type == ChatMessageTypeEnum.END">
+                    <div class="flex justify-center items-center mt-5">
+                        <p class="text-sm text-gray-500">Chat đã kết thúc</p>
+                    </div>
+                </ng-container>
+            </ng-container>
+
+            <div class="flex justify-center items-center mt-8" *ngIf="!chatRoom?.active">
+                <button class="px-20 py-3 bg-active-btn text-white font-semibold hover:bg-active-btn-h" (click)="startChat()" >
+                    Bắt đầu chat
+                </button>
+            </div>
+            <div  class="flex flex-col items-center justify-center mt-8" *ngIf="chatRoom?.active && !isAdminActive">
+                <div class="animate-spin rounded-full h-8 w-8 border-t-4 border-b-4 border-blue-600"></div>
+                <p>Vui lòng đợi admin phản hồi</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flex items-center  p-2 shadow-sm absolute bottom-2 border-2 border-custom-gray w-full transition-colors duration-200 focus-within:border-blue-500 bg-white" *ngIf="chatRoom?.active && isAdminActive">
+        <input type="text" placeholder="" class="flex-1 bg-white outline-none  px-2 " [(ngModel)]="mesaage" (keydown.enter)="sendMessage()">
+        <button class="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 focus:outline-none shrink-0" (click)="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+<div class="mt-5 flex justify-end" *ngIf="chatRoom?.active">
+    <button class="px-20 py-2 bg-delete-btn text-white font-semibold hover:bg-delete-btn-h rounded-md" (click)="endChat()" >
+        Kết thúc chat
+    </button>
+</div>

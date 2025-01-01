@@ -1,0 +1,424 @@
+<header id="header"
+    class=" w-full bg-white shadow-md  sticky top-0 z-50"
+>
+    <div id="main-header"
+        class="
+            h-[76px]
+            border-b-[1px]
+            border-custom-gray
+            shadow-sm grid
+            grid-cols-4
+            lg:grid-cols-11
+            gap-0.5 px-0
+            md:px-10
+            items-center
+            relative
+
+        "
+    >
+        <div class="col-span-1  h-full flex items-center justify-center lg:hidden">
+            <button (touchend)="toggleMbMenu()">
+                <i class="fa-solid fa-bars fa-lg text-text-color"></i>
+            </button>
+        </div>
+        <div id="mobile-menu"
+             class="
+                absolute
+                top-0
+                left-0
+                min-h-lvh
+                w-full bg-[rgba(1,1,1,0.5)]
+                transition-all
+                duration-300
+                ease-out
+                origin-left
+                transform
+                z-20
+                overflow-auto
+            "
+             [ngClass]="{'translate-x-0 opacity-100': isOpenMbMenu, '-translate-x-full opacity-0': !isOpenMbMenu}"
+        >
+            <div class="absolute min-h-lvh w-[260px] bg-white top-0 left-0 ">
+                <div class="absolute right-[-50px] top-3">
+                    <button class="h-[45px] w-[45px] rounded-full bg-white shadow-sm" (click)="toggleMbMenu()">
+                        <i class="fa-solid fa-x fa-xl text-text-color"></i>
+                    </button>
+                </div>
+                <div class=" items-center border-b-[2px] border-custom-gray shadow-sm" >
+                    <div class=" p-[10px] flex justify-center">
+                        <a routerLink="/" class="header-logo-link">
+                            <img src="../../../../assets/images/logo.png" alt="logo" class="object-cover " />
+                        </a>
+                    </div>
+                </div>
+                <div class="h-[100px] grid grid-cols-3 items-center border-b-[2px] border-custom-gray shadow-sm" *ngIf="loggedUser">
+                    <div class="col-span-1  h-[90px] p-[5px]">
+                        <img [src]="profilePictureUrl"
+                             class="object-fill h-full w-full rounded-full border-custom-gray border-2  shadow-custom-gray shadow-md"
+                        >
+                    </div>
+                    <div class="col-span-2  h-[90px] flex items-center p-[5px]">
+                        <span class="font-semibold">Chào {{loggedUser.fullName}} !</span>
+                    </div>
+                </div>
+                <div *ngIf="isLearnerDisplay">
+
+
+                    <div class=" py-[5px] border-b-[2px] border-custom-gray shadow-sm flex-col flex  items-start" *ngIf="!loggedUser">
+                        <a class=" px-[15px]  flex items-center h-[42px] w-full " routerLink="/login">
+                            <span class="font-semibold text-[16px]">Đăng nhập</span>
+                        </a>
+                        <a class="  px-[15px]  flex items-center h-[42px]" routerLink="/register">
+                            <span class="font-semibold ">Đăng ký</span>
+                        </a>
+                    </div>
+                    <div class=" py-[5px] border-b-[2px] border-custom-gray shadow-sm flex-col flex  items-start" *ngIf="loggedUser">
+                        <a class="  px-[15px]  flex items-center h-[42px]" routerLink="/my-courses-learning">
+                            <span class="font-semibold">Học tập</span>
+                        </a>
+                        <a class="  px-[15px]  flex items-center h-[42px]" routerLink="/cart">
+                            <span class="font-semibold ">Giỏ hàng</span>
+                        </a>
+                        <a class=" px-[15px]  flex items-center h-[42px] w-full " routerLink="/instructor/dashboard" *ngIf="loggedUser && loggedUser.role.name=='INSTRUCTOR'">
+                            <span class="font-semibold ">Chế độ giảng viên</span>
+                        </a>
+                        <a class=" px-[15px]  flex items-center h-[42px] w-full " routerLink="/admin" *ngIf="loggedUser &&(loggedUser.role.name=='ADMIN' || loggedUser.role.name=='ROOT')">
+                            <span class="font-semibold ">Chế độ quản trị viên</span>
+                        </a>
+<!--                        <a class="  px-[15px]  flex items-center h-[42px]" routerLink="/my-courses-learning">-->
+<!--                            <span class="font-semibold ">Học tập</span>-->
+<!--                        </a>-->
+
+                    </div>
+                    <div class=" py-[5px] border-b-[2px] border-custom-gray shadow-sm flex-col flex  items-start">
+                        <div class="flex justify-center w-full">
+                            <span>Chủ đề phổ biến</span>
+                        </div>
+                        <ng-container *ngFor="let category of categories">
+                            <a class=" px-[15px]  flex items-center h-[42px] w-full cursor-pointer" (click)="navigateToCourse(category.alias)">
+                                <span class="font-semibold ">{{ category.name }}</span>
+                            </a>
+                        </ng-container>
+
+
+                    </div>
+                    <div class=" py-[5px] border-b-[2px] border-custom-gray shadow-sm flex-col flex  items-start" *ngIf="loggedUser">
+                        <div class="flex justify-center w-full">
+                            <span>Hồ sơ</span>
+                        </div>
+                        <a class="px-[15px]  flex items-center h-[42px] w-full " routerLink="/account">
+                            <span class="font-semibold ">Cài đặt tài khoản</span>
+                        </a>
+                        <a class="  px-[15px]  flex items-center h-[42px]" routerLink="/logout">
+                            <span class="font-semibold ">Đăng suất</span>
+                        </a>
+                    </div>
+                </div>
+                <div *ngIf="isAdminDisplay">
+                    <app-admin-dashboard></app-admin-dashboard>
+                </div>
+                <div *ngIf="isInstructorDisplay">
+                    <app-instructor-dashboard></app-instructor-dashboard>
+                </div>
+            </div>
+
+        </div>
+        <div id="mobile-search"
+             class="
+                absolute
+                top-0
+                right-0
+                min-h-lvh
+                w-full bg-[rgba(1,1,1,0.5)]
+                transition-all
+                duration-300
+                ease-out
+                origin-left
+                transform
+                z-20
+            "
+             [ngClass]="{'translate-x-0 opacity-100': isOpenMbSearch, '-translate-x-full opacity-0': !isOpenMbSearch}"
+        >
+            <div class="absolute h-[100px] w-full bg-white top-0 right-0">
+                <div class="absolute left-[45%] bottom-[-60px]">
+                    <button class="h-[45px] w-[45px] rounded-full bg-white shadow-sm" (click)="toggleMbSearch()">
+                        <i class="fa-solid fa-x fa-xl text-text-color"></i>
+                    </button>
+                </div>
+
+                <div class="h-full  border-b-[2px] border-custom-gray shadow-sm">
+                    <div class="header-search  h-full  lg:flex justify-center items-center flex">
+                        <input type="text"
+                               class="
+                                    header-search-input
+                                    block w-[70%]
+                                    rounded-full
+                                    rounded-r-none
+                                    p-2.5
+                                    px-1.5
+                                    shadow-sm
+                                    border-2
+                                    border-r-0
+                                    border-custom-gray
+                                    text-base placeholder:text-gray-500
+                                    focus:outline-0
+                                    "
+                               placeholder="Tìm kiếm ..." name="keywork" [(ngModel)]="keywork"
+                               (keydown.enter)="search()"
+                        />
+                        <button class="header-search-btn bg-primary-color py-2.5 px-4 rounded-r-full border-2 border-l-0 border-custom-gray hover:bg-active-btn" >
+                            <i class="fa-solid fa-magnifying-glass  fa-lg" style="color: #f2f2f2;" (click)="search()"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class=" col-span-2 lg:col-span-2  h-full flex items-center justify-center" >
+            <div class="items-center ">
+                <a routerLink="/" class="header-logo-link">
+                    <img src="../../../../assets/images/logo.png" alt="logo" class="object-cover max-h-[50px]" />
+                </a>
+            </div>
+        </div>
+        <div class=" lg:col-span-1 hidden  h-full lg:flex items-center justify-center" >
+            <div
+                    before=""
+                    class="
+
+                                flex
+                                justify-center
+                                relative
+                                group
+                                before:conten-[attr(before)]
+                                before:absolute
+                                before:bottom-[-38px]
+                                before:right-0
+                                before:w-[75px]
+                                before:h-[50px]
+
+                            "
+            >
+                <span class="text-[16px] hover:text-link-color ">Khám phá</span>
+                <div class="absolute top-[30px] right-[-240px] p-3  w-[300px] bg-white rounded-lg shadow-lg border border-gray-200 hidden group-hover:block  max-h-[66vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white">
+                    <div>
+                        <div class="flex justify-between items-center p-4 border-b-[1px] border-border-color" >
+                            <span class="font-semibold text-[20px]">Chủ đề khóa học</span>
+                        </div>
+                    </div>
+                    <ng-container *ngFor="let category of categories">
+                        <a class=" block px-4 py-4 border-b text-gray-800 hover:bg-gray-100 hover:text-link-color cursor-pointer" (click)="navigateToCourse(category.alias)">
+                            <span class="">{{ category.name }}</span>
+                        </a>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="header-search xl:col-span-4 lg:col-span-3 h-full hidden lg:flex justify-center items-center ">
+            <input type="text"
+                   class="
+                        header-search-input
+                        block w-[90%]
+                        rounded-full
+                        rounded-r-none
+                        p-2.5
+                        px-1.5
+                        shadow-sm
+                        border-2
+                        border-r-0
+                        border-custom-gray
+                        text-base placeholder:text-gray-500
+                        focus:outline-0
+                   "
+                   placeholder="Tìm kiếm ..." name="keywork" [(ngModel)]="keywork"
+                   (keydown.enter)="search()"
+            />
+            <button class="header-search-btn bg-primary-color py-2.5 px-4 rounded-r-full border-2 border-l-0 border-custom-gray hover:bg-active-btn" >
+                <i class="fa-solid fa-magnifying-glass  fa-lg" style="color: #f2f2f2;" (click)="search()"></i>
+            </button>
+        </div>
+
+        <div class="header-nav col-span-1 lg:col-span-5 xl:col-span-4 h-full w-full flex   items-center justify-center relative z-10">
+            <ul class="flex space-x-10 items-center h-full  flex-wrap ">
+                <ng-container *ngIf="!loggedUser">
+                    <li class="hidden lg:flex">
+                        <a routerLink="/login" class="hover:bg-active-btn border-primary-color border-[1px] px-5 py-3 bg-primary-color text-[#fff] rounded-xl">
+                            <span class="">Đăng nhập</span>
+                        </a>
+                    </li>
+                    <li class="hidden lg:flex">
+                        <a routerLink="/register" class="hover:text-link-color hover:bg-custom-gray border-primary-color border-[1px] px-5 py-3 bg-[#fff] text-primary-color rounded-xl">
+                            <span class="">Đăng ký</span>
+                        </a>
+                    </li>
+                </ng-container>
+
+                <ng-container *ngIf="loggedUser">
+                    <li class="hidden lg:flex" *ngIf="loggedUser && loggedUser.role.name=='INSTRUCTOR'">
+                        <a routerLink="/instructor/dashboard" class="hover:text-link-color ">
+                            <span class="">Giảng viên</span>
+                        </a>
+                    </li>
+                    <li class="hidden lg:flex" *ngIf="loggedUser &&(loggedUser.role.name=='ADMIN' || loggedUser.role.name=='ROOT') ">
+                        <a routerLink="/admin" class="hover:text-link-color ">
+                            <span class="">Quản trị viên</span>
+                        </a>
+                    </li>
+                    <li class="hidden lg:flex">
+                        <a routerLink="/my-courses-learning" class="hover:text-link-color ">
+                            <span class="">Học tập</span>
+                        </a>
+                    </li>
+                    <li class="hidden lg:flex">
+                        <a routerLink="/cart" >
+                            <i class="fa-solid fa-cart-shopping fa-xl text-text-color hover:text-link-color" ></i>
+                        </a>
+                    </li>
+                    <li class="hidden lg:flex">
+                        <div
+                                before=""
+                                class="
+                                w-[40px]
+                                flex
+                                justify-center
+                                relative
+                                group
+                                before:conten-[attr(before)]
+                                before:absolute
+                                before:bottom-[-38px]
+                                before:right-0
+                                before:w-[40px]
+                                before:h-[50px]
+                            "
+                        >
+                            <div class="flex items-center  relative">
+                                <div class="flex items-center  ">
+                                    <i class="fa-regular fa-bell fa-xl text-text-color hover:text-link-color" ></i>
+
+                                </div>
+                                <div *ngIf="newNotification" class="absolute top-[-20px] right-[-10px]">
+                                    <i class="fa-solid fa-circle text-active-btn-h text-[12px]"></i>
+                                </div>
+
+                            </div>
+                            <div class="absolute top-[30px] right-0 p-3  w-[450px] bg-white rounded-lg shadow-lg border border-gray-200 hidden group-hover:block  ">
+                                <div>
+                                    <div class="flex justify-between items-center p-4 border-b-[1px] border-border-color" >
+                                        <span class="font-semibold text-[20px]">Thông báo</span>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="notifications.length > 0" >
+                                    <ng-container *ngFor="let notification of notifications">
+                                        <div class="flex  gap-x-5 border-b-[1px] border-border-color py-2 hover:bg-gray-200 cursor-pointer " (click)="gotoLinkNotification(notification)">
+                                            <div class="w-[55px] h-[55px] rounded-full shrink-0">
+                                                <img [src]="environment.apiGetImageCourse + notification.course.image" alt="avatar"
+                                                     class="object-cover h-full w-full rounded-full border-[1px] border-border-color">
+                                            </div>
+                                            <div class="flex justify-between gap-x-5" *ngIf="!notification.read">
+                                                <div>
+                                                    <span class="font-semibold block flex-1">{{notification.title}}</span>
+                                                    <span>{{notification.timestamp}}</span>
+                                                </div>
+                                                <div *ngIf="!notification.read" class="shrink-0">
+                                                    <i class="fa-solid fa-circle text-active-btn-h text-[12px]"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex  " *ngIf="notification.read">
+                                                <div>
+                                                    <span class="font-semibold block">{{notification.title}}</span>
+                                                    <span>{{notification.timestamp}}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <div class="flex justify-center mt-3">
+                                        <a class="px-10 py-2 bg-active-btn text-white hover:bg-active-btn-h cursor-pointer" routerLink="/notification">
+                                            Xem tất cả
+                                        </a>
+                                    </div>
+
+                                </ng-container>
+                                <ng-container *ngIf="notifications.length == 0" >
+                                    <div class="flex justify-center items-center h-[200px]">
+                                        <span>Không có thông báo nào</span>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                    </li>
+
+
+
+                    <li class="hidden lg:flex">
+                        <div
+                                before=""
+                                class="
+                                w-[40px]
+                                flex
+                                justify-center
+                                relative
+                                group
+                                before:conten-[attr(before)]
+                                before:absolute
+                                before:bottom-[-26px]
+                                before:right-0
+                                before:w-[40px]
+                                before:h-[30px]
+                            "
+                        >
+                            <div class="w-[35px] h-[35px] rounded-full">
+                                <img [src]="profilePictureUrl" alt="avatar"
+                                     class="object-cover h-full w-full rounded-full border-[1px] border-border-color">
+                            </div>
+                            <div class="absolute top-[54px] right-0  w-60 bg-white rounded-lg shadow-lg border border-gray-200 hidden group-hover:block  ">
+                                <ul class="py-2">
+                                    <li><a routerLink="/my-courses-learning" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color ">Học tập</a></li>
+                                    <li><a routerLink="/cart" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color ">Giỏ hàng</a></li>
+                                    <li><a routerLink="/orders" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color ">Lịch sử mua hàng</a></li>
+                                    <li><a routerLink="/instructor/dashboard" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color" *ngIf="loggedUser && loggedUser.role.name=='INSTRUCTOR'">Bản điều khiển giảng viên</a></li>
+                                    <li><a routerLink="/admin" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color" *ngIf="loggedUser &&(loggedUser.role.name=='ADMIN' || loggedUser.role.name=='ROOT') ">Bản điều khiển quản trị viên</a></li>
+                                    <li><a routerLink="/cskh" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color ">CSKH</a></li>
+                                    <li><a routerLink="/notification" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color border-b-[1px] border-border-color ">Thông báo</a></li>
+                                    <li><a routerLink="/account" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color ">Cài đặt tài khoản</a></li>
+                                    <li><a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-link-color" (click)="logout()">Đăng suất</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </li>
+                </ng-container>
+                <li class=" lg:hidden flex">
+                    <button (touchend)="toggleMbSearch()" >
+                        <i class="fa-solid fa-magnifying-glass fa-xl text-text-color hover:text-link-color"></i>
+                    </button>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="h-[50px] w-full border-b-[1px] border-border-color shadow-md hidden lg:flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white">
+        <div class="h-full w-full flex items-center justify-center ">
+            <ul class="flex space-x-5">
+                <ng-container *ngFor="let category of categories">
+                    <li>
+                        <a (click)="navigateToCourse(category.alias)" class="hover:text-link-color cursor-pointer">
+                            <span class="whitespace-nowrap">{{ category.name }}</span>
+                        </a>
+                    </li>
+                </ng-container>
+
+
+
+            </ul>
+        </div>
+    </div>
+
+</header>

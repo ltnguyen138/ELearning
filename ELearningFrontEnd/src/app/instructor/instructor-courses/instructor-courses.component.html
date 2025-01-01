@@ -1,0 +1,152 @@
+<div class=" mt-10 md:w-[90%] md:max-w-[1400px]  mx-auto px-2 text-text-color mb-10 relative">
+    <div class="title border-b-[2px] border-border-color pb-5">
+        <h1 class="leading-relaxed">Quản lý khóa học</h1>
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-x-10 gap-y-5 border-b-[2px]  py-5  px-2">
+        <div class="search">
+            <input type="text"
+                   class="
+                        header-search-input
+                        w-[200px]
+                        rounded-xl
+                        rounded-r-none
+                        p-2.5
+                        px-1.5
+                        shadow-sm
+                        border-2
+                        border-r-0
+                        border-custom-gray
+                        text-base placeholder:text-gray-500
+                        focus:outline-0
+                   "
+                   placeholder="Tìm kiếm ..." name="keywork"
+                   [(ngModel)]="keyword"
+                   (keydown.enter)="search()"
+            />
+            <button class="header-search-btn bg-active-btn py-2.5 px-4 rounded-r-xl border-2 border-l-0 border-custom-gray hover:bg-active-btn-h" (click)="search()">
+                <i class="fa-solid fa-magnifying-glass  fa-lg" style="color: #f2f2f2;"></i>
+            </button>
+        </div>
+        <div>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    (change)="approvalStatusFilterChange($event)"
+                    [(ngModel)]="approvalStatusFilter"
+            >
+                <option [value]="''">Tất cả trạng thái kiểm duyệt</option>
+                <option  [value]="ApprovalStatusEnum.PENDING">Đang chờ duyệt</option>
+                <option  [value]="ApprovalStatusEnum.APPROVED">Đã duyệt</option>
+                <option  [value]="ApprovalStatusEnum.REJECTED">Không được duyệt</option>
+            </select>
+        </div>
+        <div>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    (change)="categoryFilterChange($event)"
+                    [(ngModel)]="catagoryFilter"
+            >
+                <option [value]="-1">Tất cả chủ đề</option>
+                <ng-container *ngFor="let category of categories">
+                    <option [value]="category.id">{{category.name}}</option>
+                </ng-container>
+            </select>
+        </div>
+        <div class="">
+            <button class="py-2.5 px-10 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md" (click)="router.navigate(['/instructor/courses/add'])">Thêm mới</button>
+        </div>
+    </div>
+    <div class="flex flex-wrap gap-x-3 gap-y-5 border-b-[2px]  py-5  px-2 items-center">
+        <span>Sắp xếp theo:</span>
+        <div>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    (change)="sortChange()"
+                    [(ngModel)]="sortBy"
+            >
+                <option [value]="'updatedTime,desc'">Lần cập nhật gần nhất</option>
+                <option  [value]="'updatedTime,asc'">Lần cập nhật cũ nhất</option>
+                <option  [value]="'createdTime,desc'">Được tạo mới nhất</option>
+                <option  [value]="'createdTime,asc'">Được tạo cũ nhất</option>
+            </select>
+        </div>
+    </div>
+    <div class="mt-5">
+        <div class="p-6 bg-gray-50 rounded-lg shadow-md border border-gray-300">
+
+            <ul class="space-y-3 text-gray-800">
+                <li class="flex justify-start">
+                    <span class="font-semibold w-[160px]">Tổng số khóa học:</span>
+                    <span class="font-semibold bg-green-200 text-black px-2 py-1">{{totalCourse}}</span>
+                </li>
+                <li class="flex justify-start">
+                    <span class="font-semibold w-[160px]">Tổng lượt mua:</span>
+                    <span class="font-semibold bg-blue-100 text-black px-2 py-1">{{countPublishedCourse}}</span>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="mt-10">
+
+        <div class="overflow-x-auto mt-5 shadow-gray-400 shadow-md border-[2px] border-border-color ">
+            <div class="my-5">
+                <h2 class="leading-relaxed text-center">Danh sách khóa học của bạn</h2>
+            </div>
+            <table class="min-w-full bg-white border border-gray-300 ">
+                <thead>
+                <tr class="bg-primary-color text-text-white uppercase text-base">
+                    <th class="py-3 px-6 w-1/12 text-center border border-white">Id</th> <!-- Cột chiếm 1/4 độ rộng -->
+                    <th class="py-3 px-6 w-1/4 text-center border border-white">Tên khóa học</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Chủ đề</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Trình độ</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Giá</th>
+                    <th class="py-3 px-6 w-1/6 text-center border border-white">Trạng thái kiểm duyệt</th> <!-- Cột chiếm 1/6 độ rộng -->
+                    <th class="py-3 px-6 w-1/12 text-center border border-white"></th> <!-- Cột chiếm 1/6 độ rộng -->
+                </tr>
+                </thead>
+                <tbody class="text-gray-600 text-base font-light">
+
+                <ng-container *ngFor="let course of courses">
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="p-3 border border-slate-300  text-center whitespace-nowrap">
+                            {{ course.id }}
+                        </td>
+                        <td class="p-3 border border-slate-300  px-6 text-left">{{ course.name }}</td>
+                        <td class="p-3 border border-slate-300  px-6 text-left">{{ course.category.name }}</td>
+                        <td class="p-3 border border-slate-300  px-6 text-center whitespace-nowrap">{{ getCourseLevel(course.skillLevel) }}</td>
+                        <td class="p-3 border border-slate-300  px-6 text-center whitespace-nowrap">{{ roundAndFormatNumber(course.price) }}</td>
+                        <td class="p-3  text-center border border-slate-300 whitespace-nowrap ">
+                            {{getApprovalStatusEnum(course.approvalStatus)}}
+
+                        </td>
+                        <td class="p-3  text-center border border-slate-300 whitespace-nowrap gap-5 flex justify-center">
+                            <button class="bg-active-btn hover:bg-active-btn-h text-white px-5 py-2 rounded " (click)="router.navigate(['instructor/courses/detail/',course.id])">Chi tiết / Sửa</button>
+                        </td>
+                    </tr>
+
+                </ng-container>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="page mt-10 flex justify-center">
+            <div class="px-5 flex justify-center max-w-[600px]  gap-1 flex-wrap">
+                <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn  rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(1)">
+                    <i class="fa-solid fa-forward-fast fa-rotate-180"></i>
+                </button>
+                <ng-container *ngFor="let page of visiblePages">
+                    <button class="py-1 px-[16px] text-active-btn font-semibold   border border-active-btn  rounded-sm shadow-gray-400 shadow-md"
+                            [ngClass]="{'bg-active-btn text-text-white ': courseQuery.page==page , 'hover:bg-gray-300': courseQuery.page!=page}"
+                            (click)="pageChange(page)"
+                    >
+                        {{ page }}
+                    </button>
+                </ng-container>
+                <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(totalPages)">
+                    <i class="fa-solid fa-forward-fast"></i>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

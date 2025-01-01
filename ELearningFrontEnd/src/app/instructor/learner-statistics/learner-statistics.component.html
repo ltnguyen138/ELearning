@@ -1,0 +1,43 @@
+<div class="p-6 bg-gray-50 rounded-lg shadow-md border border-gray-300">
+    <h2 class="text-xl font-bold text-gray-900 mb-6">Thống kê học viên khóa học</h2>
+    <ul class="space-y-3 text-gray-800">
+        <li class="flex justify-between">
+            <span class="font-medium">Khóa học:</span>
+            <span class="font-semibold text-blue-600">{{course?.name}}</span>
+        </li>
+        <li class="flex justify-between">
+            <span class="font-medium">Giảng viên:</span>
+            <span class="font-semibold">{{course?.instructor?.fullName}}</span>
+        </li>
+        <li class="flex justify-between">
+            <span class="font-medium">Số lượng học viên:</span>
+            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded font-semibold">{{ course?.purchasedCount }}</span>
+        </li>
+        <li class="flex justify-between">
+            <span class="font-medium">Số lượng học viên hoàn thành:</span>
+            <span class="bg-green-100 text-green-800 px-2 py-1 rounded font-semibold">{{ countLearnerComplete }}</span>
+        </li>
+        <li class="flex justify-between">
+            <span class="font-medium">Trung bình điểm đánh giá:</span>
+            <span class="bg-yellow-200 text-green-800 px-2 py-1 rounded font-semibold">{{ course?.averageRating }}</span>
+        </li>
+        <li class="flex justify-between">
+            <span class="font-medium">Số lượng học viên đánh giá:</span>
+            <span class="bg-cyan-300 text-green-800 px-2 py-1 rounded font-semibold">{{ course?.ratingCount }}</span>
+        </li>
+    </ul>
+
+    <div class="py-4 px-4 border border-custom-gray shadow-md shadow-custom-gray mt-5 ">
+        <div class="flex justify-between items-center">
+            <span class="font-semibold">Thống kê học viên hoàn thành theo bài giảng</span>
+            <button class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition" *ngIf="!isShowListCompleteLearner" (click)="isShowListCompleteLearner = !isShowListCompleteLearner"><i class="fa-solid fa-chevron-up"></i></button>
+            <button class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition" *ngIf="isShowListCompleteLearner" (click)="isShowListCompleteLearner = !isShowListCompleteLearner"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+
+        <div *ngIf="isShowListCompleteLearner" @slideToggle>
+            <ng-container *ngFor="let chappter of chapters,  let i = index">
+                <app-list-complete-learner [chapter]="chappter" [index]="i"></app-list-complete-learner>
+            </ng-container>
+        </div>
+    </div>
+</div>

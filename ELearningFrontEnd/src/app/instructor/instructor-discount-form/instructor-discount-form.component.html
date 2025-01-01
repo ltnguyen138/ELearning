@@ -1,0 +1,112 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto" >
+    <div class=" px-10 py-5 mt-10 md:w-[90%] md:max-w-[600px]  mx-auto  text-text-color mb-10 relative bg-[#f8f9fa] border border-custom-gray shadow-md shadow-custom-gray">
+        <div class="title border-b-[2px] border-border-color p-3">
+            <h1 *ngIf="mode==='add'" class="leading-relaxed">Thêm mới mã giảm giá khóa học</h1>
+            <h1 *ngIf="mode==='edit'" class="leading-relaxed">Cập nhật mã giảm giá khóa học</h1>
+        </div>
+        <form [formGroup]="discountForm" class="mt-5">
+            <div class="max-w-[600px]  mt-10 ">
+                <div class="form-item">
+                    <label for="name" class="block text-base font-[600]  ">Mã giảm giá</label>
+                    <div class="mt-2">
+                        <input id="name" name="name" type="text"
+                               class="
+                               block
+                               w-full
+                               py-2.5 px-1.5
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                               formControlName="code"
+                        >
+                    </div>
+                </div>
+                <div class="form-item mt-5">
+                    <label for="discount" class="block text-base font-[600]  ">Tỉ lệ giảm(%)</label>
+                    <div class="mt-2">
+                        <input id="discount" name="discount" type="number"
+                               class="
+                               block
+                               w-full
+                               py-2.5 px-1.5
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                               formControlName="discount"
+                        >
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <label for="validFrom" class="block text-base font-[600]  ">Ngày bắt đầu</label>
+                    <div class="mt-2">
+                        <p-calendar
+                                class="block
+                                    w-full
+
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                                dateFormat="dd-mm-yy"
+                                formControlName="validFrom"
+
+                        >
+                        </p-calendar>
+
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <label for="validTo" class="block text-base font-[600]  ">Ngày kết thúc</label>
+                    <div class="mt-2">
+                        <p-calendar
+                                class="block
+                                    w-full
+
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                                dateFormat="dd-mm-yy"
+                                formControlName="validTo"
+
+                        >
+                        </p-calendar>
+
+                    </div>
+                </div>
+                <div class="form-item mt-5">
+                    <label for="quantity" class="block text-base font-[600]  ">Số lượng</label>
+                    <div class="mt-2">
+                        <input id="quantity" name="quantity" type="number"
+                               class="
+                               block
+                               w-full
+                               py-2.5 px-1.5
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                               formControlName="quantity"
+                        >
+                    </div>
+                </div>
+                <div class="mt-8 form-item flex items-center gap-10">
+                    <label for="activated" class=" text-base font-[600]  ">Trạng thái:</label>
+                    <input type="checkbox" class="form-checkbox hover:cursor-pointer h-[26px] w-[26px] focus:ring focus:ring-blue-600 focus:ring-opacity-50" formControlName="activated">
+                </div>
+
+                <div class="acction-btn mt-10 flex justify-center gap-10">
+                    <button class="py-2.5 px-8 md:px-14 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="saveDiscount()">Lưu</button>
+                    <button class="py-2.5 px-4  md:px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" (click)="redirectToDiscount()" >Quay lại</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

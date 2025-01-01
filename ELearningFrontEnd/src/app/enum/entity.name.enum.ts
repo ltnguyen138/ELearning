@@ -1,0 +1,11 @@
+export enum EntityNameEnum{
+
+    COURSE = 'COURSE',
+    LECTURE = 'LECTURE',
+    CHAPTER = 'CHAPTER',
+    DISCOUNT = 'DISCOUNT',
+    REVIEW = 'REVIEW',
+    QUESTION_ANSWER = 'QUESTION_ANSWER',
+    USER =  'USER',
+    REPORT = 'REPORT',
+}

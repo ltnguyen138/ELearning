@@ -1,0 +1,85 @@
+<p-confirmDialog [style]="{'max-width': '600px'}"></p-confirmDialog>
+<div class=" mt-10 md:w-[90%] md:max-w-[1400px]  mx-auto px-2 text-text-color mb-10 relative bg ">
+    <div class="title border-b-[2px] border-border-color pb-5">
+        <h1 class="leading-relaxed">Dịch vụ chăm sóc khách hàng</h1>
+    </div>
+
+    <div class="mt-10 w-full">
+
+        <div class="overflow-x-auto min-w-[840px] mt-5 shadow-gray-400 shadow-md border-[2px] border-border-color p-4">
+            <div class="my-3 w-full relative">
+                <h2 class="leading-relaxed text-center">Danh sách yêu cầu chat</h2>
+                <div class=" flex justify-center items-center  absolute right-3 top-[2px] hover:text-active-btn cursor-pointer w-[36px] h-[36px] hover:bg-gray-200 rounded-md" >
+                    <i  class="fa-solid fa-angle-down text-xl"></i>
+                </div>
+            </div>
+            <div class="flex gap-4 flex-wrap mt-8 items-center justify-center">
+                <ng-container *ngFor="let chatRoom of startReqChatRomm">
+                    <div class="w-[380px] bg-white rounded-lg  p-4  shadow-md shadow-custom-gray border border-custom-gray cursor-pointer hover:bg-gray-100">
+                        <div class="flex items-center w-full">
+                            <i class="fas fa-headphones-alt text-2xl text-gray-700"></i>
+                            <div class="ml-4 flex-1">
+                                <p class="font-bold">Yêu cầu chat: Khách hàng #{{chatRoom.userId}}</p>
+
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-3">
+                            <button class="py-1 px-4 bg-active-btn text-white hover:bg-active-btn-h rounded-md" (click)="startChat(chatRoom)">Chấp nhận</button>
+                        </div>
+
+                    </div>
+                </ng-container>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-10 w-full">
+
+        <div class="overflow-x-auto min-w-[840px] mt-5 shadow-gray-400 shadow-md border-[2px] border-border-color p-4">
+            <div class="my-3 w-full relative">
+                <h2 class="leading-relaxed text-center">Danh sách cửa sổ đang chat</h2>
+                <div class=" flex justify-center items-center  absolute right-3 top-[2px] hover:text-active-btn cursor-pointer w-[36px] h-[36px] hover:bg-gray-200 rounded-md" >
+                    <i  class="fa-solid fa-angle-down text-xl"></i>
+                </div>
+            </div>
+            <div class="flex gap-4 flex-wrap mt-8 items-center justify-center">
+                <ng-container *ngFor="let chatRoom of keys">
+                    <div class="w-[380px] bg-white rounded-lg  p-4  shadow-md shadow-custom-gray border border-custom-gray cursor-pointer hover:bg-gray-100 z-20" (click)="adminRead(chatRoom) ; toggleViewChatRoom(chatRoom.id)">
+                        <div class="flex items-center w-full gap-x-2">
+                            <i class="fas fa-headphones-alt text-2xl text-gray-700"></i>
+                            <div class="ml-4 flex-1">
+                                <p class="font-bold">Trò chuyện: Khách hàng #{{chatRoom.userId}}</p>
+                            </div>
+                            <i class="fa-solid fa-circle text-active-btn-h text-[14px]" *ngIf="!chatRoom.adminRead"></i>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="w-full md:w-[100%] md:max-w-[1400px] mx-auto relative h-[480px]">
+        <div class="w-full fixed bottom-0 h-[460px]  flex  max-w-[inherit] overflow-x-auto gap-5">
+<!--            <div class="w-[350px] shrink-0 border-custom-gray border-2 shadow-xl shadow-custom-gray bg-gray-100">-->
+<!--                <div class="flex items-center justify-between w-full px-2 py-3 bg-white border-b-2 border-b-custom-gray">-->
+<!--                    <div class="flex items-center">-->
+<!--                        <i class="fas fa-headphones-alt text-2xl text-gray-700"></i>-->
+<!--                        <div class="ml-4 flex-1">-->
+<!--                            <p class="font-bold">Khách hàng #</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="w-8 h-8 hover:text-active-btn-h text-active-btn cursor-pointer  flex justify-center items-center">-->
+<!--                        <i class="fa-solid fa-minus font-bold text-xl"></i>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+            <ng-container *ngFor="let chatRoom of keys">
+                <div (click)="adminRead(chatRoom)">
+                    <app-admin-chat [chatRoom]="chatRoom" [viewChatRoom]="openedChatRoom.get(chatRoom.id) ?? false" [chatMessages]="chatRooms.get(chatRoom) ?? []" (toggleViewChatRoom)="toggleViewChatRoom(chatRoom.id) " (closeChatRoom)="removeChatRoom($event)" (sendMessage)="sendMessage($event)"></app-admin-chat>
+                </div>
+
+            </ng-container>
+        </div>
+    </div>
+
+</div>

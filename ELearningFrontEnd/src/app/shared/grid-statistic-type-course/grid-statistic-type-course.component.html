@@ -1,0 +1,21 @@
+<div class="py-5">
+    <div class="mb-10">
+        <h2 class="leading-relaxed text-center">{{title}}</h2>
+    </div>
+    <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white "  >
+        <ag-grid-angular
+                class="ag-theme-quartz m-5"
+                style="height: 500px;"
+                [rowData]="rowData"
+                [columnDefs]="colDefs"
+                [defaultColDef]="defaultColDef"
+                [rowSelection]="rowSelection"
+                [pagination]="true"
+                [paginationPageSize]="paginationPageSize"
+                [paginationPageSizeSelector]="paginationPageSizeSelector"
+                [class]="themeClass"
+        >
+        </ag-grid-angular>
+    </div>
+</div>
+

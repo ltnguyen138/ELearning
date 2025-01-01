@@ -1,0 +1,16 @@
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.9)] flex items-center justify-center ">
+
+    <div class="m-10 flex items-center justify-center h-full " >
+
+        <div class="  p-1.5 relative">
+            <div class="absolute right-[-25px] top-0 cursor-pointer " (click)="navigateBack()">
+                <i class="fa-solid fa-xmark text-white text-2xl hover:text-delete-btn-h"></i>
+            </div>
+            <video #videoPlayer  class="max-h-[530px]" controls >
+                <source  type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="bg-gray-200">
+
+    <div class="bg bg-active-btn pt-14 pb-9 px-7 min-w-[1200px]">
+        <h2 class="uppercase  text-white text-[24px]">Tổng quan Website</h2>
+        <div class="flex gap-x-5 justify-between py-8">
+            <div class="min-w-[300px] py-4 px-3 bg-white rounded-xl flex shadow-md shadow-blue-950 items-start border hover:scale-105 transition-all">
+                <div class="flex-1">
+                    <p class="uppercase text-gray-600 font-bold text-[16px]">Doanh thu</p>
+                    <p class="uppercase text-black font-semibold mt-1 text-[18px]">{{ roundAndFormatNumber(revenueCart?.currentValue) }}</p>
+                    <p class="mt-3">
+                        <span class="text-green-600 font-semibold" *ngIf="revenueCart && revenueCart.ratio >= 0"><i class="fa-solid fa-arrow-up"></i>{{ revenueCart? revenueCart.ratio  *100 : 0 }}%</span>
+                        <span class="text-red-600 font-semibold" *ngIf="revenueCart && revenueCart.ratio < 0"><i class="fa-solid fa-arrow-down"></i>{{ revenueCart? revenueCart.ratio  *100 : 0 }}%</span>
+                        <span class="text-gray-500 font-semibold"> với hôm qua</span>
+                    </p>
+                </div>
+                <div class="h-[50px] w-[50px] bg-[#F55B3A] flex justify-center items-center rounded-full">
+                    <div><i class="fa-solid fa-money-check-dollar text-white text-[20px]"></i></div>
+                </div>
+            </div>
+            <div class="min-w-[300px] py-4 px-2 bg-white rounded-xl flex shadow-md shadow-blue-950 items-start border hover:scale-105 transition-all">
+                <div class="flex-1">
+                    <p class="uppercase text-gray-600 font-bold text-[16px]">Tổng khóa học đã duyệt</p>
+                    <p class="uppercase text-black font-semibold mt-1 text-[18px]">{{ courseCart?.totalValue }} </p>
+                </div>
+                <div class="h-[50px] w-[50px] bg-[#FB7340] flex justify-center items-center rounded-full">
+                    <div><i class="fa-solid fa-book-open text-white text-[20px]"></i></div>
+                </div>
+            </div>
+            <div class="min-w-[300px] py-4 px-3 bg-white rounded-xl flex shadow-md shadow-blue-950 items-start border hover:scale-105 transition-all">
+                <div class="flex-1">
+                    <p class="uppercase text-gray-600 font-bold text-[16px]">Khóa học tạo mới</p>
+                    <p class="uppercase text-black font-semibold mt-1 text-[18px]">{{ courseCart?.currentValue }}</p>
+                    <p class="mt-3">
+                        <span class="text-green-600 font-semibold" *ngIf="courseCart && courseCart.ratio >= 0"><i class="fa-solid fa-arrow-up"></i>{{ courseCart? courseCart.ratio  *100 : 0 }}%</span>
+                        <span class="text-red-600 font-semibold" *ngIf="courseCart && courseCart.ratio < 0"><i class="fa-solid fa-arrow-down"></i>{{ courseCart? courseCart.ratio  *100 : 0 }}%</span>
+                        <span class="text-gray-500 font-semibold"> với hôm qua</span>
+                    </p>
+                </div>
+                <div class="h-[50px] w-[50px] bg-[#2DCE96] flex justify-center items-center rounded-full">
+                    <div><i class="fa-brands fa-leanpub text-white text-[20px]"></i></div>
+                </div>
+            </div>
+            <div class="min-w-[300px] py-4 px-3 bg-white rounded-xl flex shadow-md shadow-blue-950 items-start border hover:scale-105 transition-all">
+                <div class="flex-1">
+                    <p class="uppercase text-gray-600 font-bold text-[16px] ">Tổng người dùng</p>
+                    <p class="uppercase text-black font-semibold mt-1 text-[18px]">{{ userCart?.totalValue }}</p>
+                </div>
+                <div class="h-[50px] w-[50px] bg-[#11A4EF] flex justify-center items-center rounded-full">
+                    <div><i class="fa-solid fa-user text-white text-[20px]"></i></div>
+                </div>
+            </div>
+            <div class="min-w-[300px] py-4 px-3 bg-white rounded-xl flex shadow-md shadow-blue-950 items-start border hover:scale-105 transition-all">
+                <div class="flex-1">
+                    <p class="uppercase text-gray-600 font-bold text-[16px]">Người dùng mới</p>
+                    <p class="uppercase text-black font-semibold mt-1 text-[18px]">{{ userCart?.currentValue }}</p>
+                    <p class="mt-3">
+                        <span class="text-green-600 font-semibold" *ngIf="userCart && userCart.ratio >= 0"><i class="fa-solid fa-arrow-up"></i>{{ userCart? userCart.ratio  *100 : 0 }}%</span>
+                        <span class="text-red-600 font-semibold" *ngIf="userCart && userCart.ratio < 0"><i class="fa-solid fa-arrow-down"></i>{{ userCart? userCart.ratio  *100 : 0 }}%</span>
+                        <span class="text-gray-500 font-semibold"> với hôm qua</span>
+                    </p>
+                </div>
+                <div class="h-[50px] w-[50px] bg-[#1C7BF0] flex justify-center items-center rounded-full">
+                    <div><i class="fa-solid fa-user-plus text-white text-[20px]"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="bg-active-btn h-[80px]">
+
+        </div>
+        <div class=" min-w-[800px] w-[92%] mx-auto h-[480px] mt-[-100px] flex gap-x-5 ">
+            <div class="w-3/5 bg-[#172B4D] px-2 shadow-md shadow-custom-gray border border-[#172B4D] rounded-md">
+                <app-line-chart-admin-dashboard [statisticsData]="revenueStatistics" [isAdmin]="true"></app-line-chart-admin-dashboard>
+            </div>
+            <div class="w-2/5 bg-white px-2 shadow-md border shadow-custom-gray rounded-md">
+                <app-vertical-bar-order [statisticsData]="revenueStatistics"></app-vertical-bar-order>
+            </div>
+        </div>
+    </div>
+
+    <div class="pb-20">
+
+        <div class="mt-20 min-w-[800px] w-[92%] mx-auto h-[480px]  flex gap-x-5 rounded-md">
+            <div class="w-2/5 bg-white px-2 shadow-md shadow-custom-gray border">
+                <app-pie-category-course [statisticsData]="categoryCourseStatistics" [isAdmin]="true"></app-pie-category-course>
+            </div>
+            <div class="w-3/5 bg-white px-5 shadow-md shadow-custom-gray border py-5 rounded-md">
+                <div class="flex justify-between">
+                    <span class="text-[22px] font-semibold">Khóa học yêu cầu kiểm duyệt</span>
+                    <a [routerLink]="'/admin/courses'" [queryParams]="{moderationRequested: true}"  class="text-active-btn hover:text-active-btn-h font-semibold">Xem tất cả</a>
+                </div>
+
+                <table class="bg-white border border-gray-300 mt-10">
+                    <thead>
+                    <tr class="bg-primary-color text-text-white uppercase text-base">
+                        <th class="py-3 px-6 w-[50%] text-center border border-white">Tên khóa học</th>
+                        <th class="py-3 px-6 w-[25%] text-center border border-white">Chủ đề</th>
+                        <th class="py-3 px-6 w-[25%] text-center border border-white">Tác giả</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-text-color text-base font-light">
+                    <ng-container *ngFor="let course of courses">
+                        <tr class="border-b border-gray-100 hover:bg-gray-200 hover:text-active-btn-h cursor-pointer" (click)="gotoModerationRequest(course.id)">
+                            <td class="w-[50%] p-3 border border-slate-300 text-left whitespace-nowrap">{{ course.name }}</td>
+                            <td class="w-[25%] p-3 border border-slate-300 text-left whitespace-nowrap">{{ course.category.name }}</td>
+                            <td class="w-[25%] p-3 border border-slate-300 text-left">{{ course.instructor.email }}</td>
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

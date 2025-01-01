@@ -1,0 +1,44 @@
+<div class="w-[350px] shrink-0 border-custom-gray border-2 shadow-xl shadow-custom-gray bg-gray-100 h-full relative" *ngIf="viewChatRoom">
+    <div class="flex items-center justify-between w-full px-2 py-3 bg-white border-b-2 border-b-custom-gray">
+        <div class="flex items-center">
+            <i class="fas fa-headphones-alt text-2xl text-gray-700"></i>
+            <div class="ml-4 flex-1 flex gap-x-3 items-center">
+                <p class="font-bold">Khách hàng #</p>
+                <i class="fa-solid fa-circle text-active-btn-h text-[14px]" *ngIf="!chatRoom.adminRead"></i>
+            </div>
+        </div>
+        <div class="w-8 h-8 hover:text-active-btn-h text-active-btn cursor-pointer  flex justify-center items-center" (click)="toggleViewChatRoomEvent()">
+            <i class="fa-solid fa-minus font-bold text-xl"></i>
+        </div>
+    </div>
+
+    <div #contentChat class="h-[300px] w-full p-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white pr-3 relative" *ngIf="chatRoom?.active" >
+<!--        <div class="absolute top-[2px] left-[46%]">-->
+<!--            <div class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-600"></div>-->
+<!--        </div>-->
+        <ng-container *ngFor="let message of  getMessagesUntilEnd()">
+            <ng-container *ngIf="message.type == ChatMessageTypeEnum.END && !endChat">
+                <div class="flex flex-col justify-center items-center mt-5">
+                    <p class="text-sm text-gray-600 font-semibold">Người dùng đã kết thúc phiên chat</p>
+                    <button class="px-20 py-3 bg-active-btn text-white font-semibold hover:bg-active-btn-h mt-3" (click)="closeChatRoomEvent()">Đóng cửa sổ</button>
+                </div>
+
+            </ng-container>
+            <ng-container *ngIf="message.sender.id == loggedUser?.id && message.type!=ChatMessageTypeEnum.END">
+                <app-send-message [message]="message" [minimized]="true"></app-send-message>
+            </ng-container>
+
+            <ng-container *ngIf="message.sender.id != loggedUser?.id && message.type!=ChatMessageTypeEnum.END">
+                <app-receive-message [message]="message" [minimized]="true"></app-receive-message>
+            </ng-container>
+        </ng-container>
+
+    </div>
+
+    <div class="flex items-center  py-2 px-1 shadow-sm absolute bottom-2 border-2 border-custom-gray w-full transition-colors duration-200 focus-within:border-blue-500 bg-white">
+        <input type="text" placeholder="" class="flex-1 bg-white outline-none  px-2 " [(ngModel)]="message" (keydown.enter)="sendMessageEvent()">
+        <button class="bg-blue-400 text-white px-3 py-1 rounded-lg hover:bg-blue-500 focus:outline-none shrink-0" (click)="sendMessageEvent()" >
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</div>

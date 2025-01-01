@@ -1,0 +1,19 @@
+
+<div>
+    <div class="grid grid-cols-5 cursor-pointer group px-3" (click)="isShowListLecture = !isShowListLecture">
+        <div class=" col-span-4 group-hover:text-active-btn-h ">
+            <span class="block font-semibold">{{chapter.name}}</span>
+            <span class="block"> {{lectureCount}} bài học</span>
+        </div>
+        <div class="col-span-1 flex justify-end items-center group-hover:text-active-btn-h" >
+            <i *ngIf="isShowListLecture" class="fa-solid fa-angle-down"></i>
+            <i *ngIf="!isShowListLecture" class="fa-solid fa-angle-up"></i>
+        </div>
+    </div>
+    <div class="mt-2 border-custom-gray border-t-[2px]" *ngIf="isShowListLecture" @slideToggle>
+        <ng-container *ngFor="let lecture of lectures, let i = index">
+            <app-manager-lecture [lecture]="lecture" [index]="i"></app-manager-lecture>
+        </ng-container>
+    </div>
+
+</div>

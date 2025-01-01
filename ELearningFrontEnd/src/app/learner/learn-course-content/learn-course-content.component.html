@@ -1,0 +1,7 @@
+<div class="p-4 flex items-center justify-center h-full" >
+    <video #videoPlayer class="max-h-[530px]" controls (timeupdate)="onTimeUpdate()"> >
+
+        <source [src]="getVideoContentUrl()" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>

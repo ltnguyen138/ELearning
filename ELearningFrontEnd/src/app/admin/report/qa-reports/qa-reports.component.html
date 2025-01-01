@@ -1,0 +1,178 @@
+<div class="mt-5 flex flex-wrap gap-x-10 gap-y-5  py-5  px-2 items-center">
+    <div class="search">
+        <input type="text"
+               class="
+                        header-search-input
+                        w-[200px]
+                        rounded-xl
+                        rounded-r-none
+                        p-2.5
+                        px-1.5
+                        shadow-sm
+                        border-2
+                        border-r-0
+                        border-custom-gray
+                        text-base placeholder:text-gray-500
+                        focus:outline-0
+                   "
+               placeholder="Tìm kiếm ..." name="keywork"
+               [(ngModel)]="reason"
+        />
+        <button class="header-search-btn bg-active-btn py-2.5 px-4 rounded-r-xl border-2 border-l-0 border-custom-gray hover:bg-active-btn-h" (click)="search()">
+            <i class="fa-solid fa-magnifying-glass  fa-lg" style="color: #f2f2f2;"></i>
+        </button>
+    </div>
+    <div>
+        <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                [(ngModel)]="statusFilter"
+                (change)="changeReportStatusFilter()"
+        >
+            <option  [value]="''">Tất cả trạng thái </option>
+            <ng-container *ngFor="let status of reportStatus">
+                <option [value]="status">{{status}}</option>
+            </ng-container>
+        </select>
+    </div>
+    <div>
+        <button class=" text-delete-btn font-semibold bg-white hover:bg-gray-300" (click)="clearFilter()">
+            Xóa Bộ lọc
+        </button>
+    </div>
+
+</div>
+<div class="flex flex-wrap gap-x-3 gap-y-5  py-3  px-2 items-center border-b-[2px]">
+    <span>Sắp xếp theo:</span>
+    <div>
+        <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                (change)="sortByChange()"
+                [(ngModel)]="sortBy"
+        >
+            <option  [value]="'timestamp,desc'">Được tạo mới nhất</option>
+            <option  [value]="'timestamp,asc'">Được tạo cũ nhất</option>
+        </select>
+    </div>
+</div>
+
+<div class="mt-10">
+
+    <div class="overflow-x-auto mt-5 shadow-gray-400 shadow-md border-[2px] border-border-color w-full">
+        <div class="my-5">
+            <h2 class="leading-relaxed text-center">Danh sách báo cáo câu hỏi đáp</h2>
+            <div class="flex flex-wrap gap-x-3 gap-y-5 border-b-[2px]  pb-5  px-2 items-center" *ngIf="title !=''">
+                <span class="text-[18px] font-semibold line-clamp-1">{{title}}</span>
+            </div>
+
+        </div>
+        <table class="min-w-[1000px] w-full bg-white border border-gray-300 ">
+            <thead>
+            <tr class="bg-primary-color text-text-white uppercase text-base">
+                <th class="py-3 px-6 w-1/12 text-center border border-white" *ngIf="this.qaIdFilter != -1 && reports.length > 0 ">
+                    <input
+                            class="form-checkbox h-5 w-5 rounded-md text-blue-600"
+                            type="checkbox"
+                            (change)="toggleAllSelection()"
+                            [checked]="selectedReportsId.size == reports.length"
+                            [disabled]="reportService.checkReportStatus(reports, ReportStatus.DISMISSED) || reportService.checkReportStatus(reports, ReportStatus.RESOLVED)"
+                    />
+                </th>
+                <th class="py-3 px-6 w-1/6 text-center border border-white">Tài khoản báo cáo</th> <!-- Cột chiếm 1/4 độ rộng -->
+                <th class="py-3 px-6 w-1/4 text-center border border-white">Lý do báo cáo</th> <!-- Cột chiếm 1/2 độ rộng -->
+                <th class="py-3 px-6 w-1/4 text-center border border-white">Nội dung bị báo cáo</th>
+                <th class="py-3 px-6 w-1/6 text-center border border-white">Trạng thái</th> <!-- Cột chiếm 1/6 độ rộng -->
+                <!-- Cột chiếm 1/6 độ rộng -->
+            </tr>
+            </thead>
+            <tbody class=" text-base ">
+            <ng-container *ngFor="let report of reports, let i = index">
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="p-3 border border-slate-300 text-center"  *ngIf="this.qaIdFilter != -1">
+                        <input
+                                class="h-5 w-5 rounded-md bg-white checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                type="checkbox"
+                                (change)="toggleSelection(report)"
+                                [checked]="selectedReportsId.has(report.id)"
+                                [disabled]="report.status == ReportStatus.DISMISSED || report.status == ReportStatus.RESOLVED"
+                        />
+                    </td>
+                    <td class="p-3 border border-slate-300   ">
+                        {{ report.user.email }}
+                    </td>
+                    <td class="p-3 border border-slate-300   ">
+                        {{ report.reason }}
+                    </td>
+                    <td class="p-3 border border-slate-300 cursor-pointer text-active-btn hover:text-active-btn-h  " title="Lọc các báo cáo khác với nội dung này" (click)="qaContentFilterChange(report.questionAnswer)">
+                        {{ report.questionAnswer.content }}
+                        <span class="text-delete-btn" *ngIf="report.questionAnswer.deleted">(Đã xóa)</span>
+                    </td>
+                    <td class="p-3 border border-slate-300  text-center ">
+                        {{ report.status }}
+                    </td>
+
+                </tr>
+            </ng-container>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<div class="flex flex-wrap justify-end mt-3 gap-x-5 items-center">
+    <span class="font-semibold">Hành động với đối tượng bị báo cáo:</span>
+    <button
+            class="px-2 py-2 shadow-custom-gray shadow-md bg-delete-btn hover:bg-delete-btn-h text-text-white rounded-md  disabled:bg-red-300"
+            [disabled]="selectedReportsId.size ==0"
+            (click)="openDeleteModal('DELETE_QA')"
+    >
+        Xóa đánh giá
+    </button>
+    <button
+            class="px-2 py-2 shadow-custom-gray shadow-md bg-delete-btn hover:bg-delete-btn-h text-text-white rounded-md disabled:bg-red-300"
+            [disabled]="selectedReportsId.size ==0"
+            (click)="openDeleteModal('BLOCK_USER')"
+    >
+        Khóa tài khoản
+    </button>
+    <button
+            class="px-2 py-2 border-[1px] border-delete-btn shadow-custom-gray shadow-md text-delete-btn rounded-md hover:bg-red-50 disabled:bg-red-300 disabled:text-text-white disabled:border-0"
+            [disabled]="selectedReportsId.size ==0"
+            (click)="openDeleteModal('IGNORE_REPORT')"
+    >
+        Bỏ qua báo cáo
+    </button>
+</div>
+<div class="page mt-10 flex justify-center">
+    <div class="px-5 flex justify-center max-w-[600px]  gap-1 flex-wrap">
+        <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn  rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(1)">
+            <i class="fa-solid fa-forward-fast fa-rotate-180"></i>
+        </button>
+        <ng-container *ngFor="let page of visiblePages">
+            <button class="py-1 px-[16px] text-active-btn font-semibold    border border-active-btn  rounded-sm shadow-gray-400 shadow-md"
+                    [ngClass]="{'bg-active-btn text-text-white': reportQuery.page==page, 'hover:bg-gray-200': reportQuery.page!=page}"
+                    (click)="pageChange(page)"
+            >
+                {{ page }}
+            </button>
+        </ng-container>
+        <button class="py-1 px-[16px] text-active-btn font-semibold  hover:bg-gray-200 border border-active-btn rounded-sm shadow-gray-400 shadow-md" (click)="pageChange(totalPages)">
+            <i class="fa-solid fa-forward-fast"></i>
+        </button>
+
+    </div>
+</div>
+
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.3)] flex items-center justify-center" *ngIf="isOpenDeleteModal">
+    <div class="bg-white p-5 rounded-md shadow-gray-400 shadow-md w-[700px]">
+        <h2 class="text-center" *ngIf="actionType == 'DELETE_QA'">Xóa hỏi đáp</h2>
+        <h2 class="text-center" *ngIf="actionType == 'BLOCK_USER'">Khóa tài khoản người dùng</h2>
+        <h2 class="text-center" *ngIf="actionType == 'IGNORE_REPORT'">Bỏ qua báo cáo</h2>
+        <form [formGroup]="reasonForm">
+            <div class="mt-5">
+                <label  class="block text-base font-[600] mt-15 ">Lý do thực hiện</label>
+                <textarea formControlName="reason" class="w-full h-[100px] border-custom-gray border-2 shadow-gray-400 shadow-md mt-5 p-5"></textarea>
+            </div>
+            <div class="acction-btn mt-10 flex justify-center gap-10">
+                <button class="py-2.5 px-14 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="actionReports()" >Thực hiện</button>
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" (click)="isOpenDeleteModal = !isOpenDeleteModal" >Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>

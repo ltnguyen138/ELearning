@@ -1,0 +1,35 @@
+<div class="relative">
+    <button (click)="scrollLeft()" class="absolute left-[-12px] top-1/3 z-20 bg-[rgba(45,47,48,0.5)] text-white p-2 rounded-full md:flex items-center justify-center h-[40px] w-[40px] hidden">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <div class="flex space-x-4 md:overflow-x-hidden overflow-auto relative py-3" #courseList>
+        <div *ngFor="let course of courses" class="bg-white border rounded-md shadow-md w-[260px] shadow-gray-400 flex-shrink-0 my-2 cursor-pointer py-2 transition-all duration-300 hover:scale-105" (click)="router.navigate(['/courses/' + course.alias])">
+            <div class="w-full h-[160px] box-border ">
+                <img [src]="environment.apiGetImageCourse + course.image" alt="{{course.name}}"
+                     class="rounded-t-md mb-3 h-full w-full  object-cover  shadow-gray-300 shadow-md">
+            </div>
+            <div class="px-2 mt-3">
+                <h3 class="font-bold text-lg mb-2 truncate-2-lines">{{ course.name }}</h3>
+                <p class="text-sm text-gray-500 mb-2 ">{{ course.instructor.fullName }}</p>
+                <div class="flex items-center mb-2">
+                    <app-rating-star [rating]="course.averageRating"> </app-rating-star>
+
+                    <span class="text-sm text-gray-500 ml-2">({{ course.ratingCount }} đánh giá)</span>
+                </div>
+                <div class="flex items-center mb-2" *ngIf="course.discountPrice>0">
+                    <span class="text-lg font-bold text-red-500">{{ course.price - course.discountPrice | number:'1.0-0' }} ₫</span>
+                    <!-- Giả sử giá thứ hai là giá gốc đã giảm -->
+                    <span class="text-gray-400 line-through ml-2">{{ course.price | number:'1.0-0' }} ₫</span>
+                </div>
+                <div class="flex items-center mb-2" *ngIf="!course.discountPrice || course.discountPrice <= 0">
+                    <span class="text-lg font-bold text-red-500">{{ course.price  | number:'1.0-0' }} ₫</span>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <button (click)="scrollRight()" class="absolute right-[-12px] top-1/3 z-20 bg-[rgba(45,47,48,0.5)] text-white p-2 rounded-full md:flex items-center justify-center h-[40px] w-[40px] hidden">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+</div>

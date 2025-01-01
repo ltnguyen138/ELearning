@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      font-size: 16px;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #18487b;
+      border: 1px solid #e0e0e0;
+      padding: 20px;
+    }
+    .header {
+      color: #ffffff;
+      padding: 10px 0;
+      text-align: right;
+      border-bottom: 1px solid #ffffff;
+
+    }
+    .header img {
+      max-height: 40px;
+    }
+    .content {
+      padding: 20px;
+      color: #ffffff;
+
+    }
+    .content p {
+      margin: 0 0 15px;
+      line-height: 1.6;
+    }
+    .content a{
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .link {
+
+      padding: 15px 20px;
+      color: #ffffff;
+      background-color: #1aa0d5;
+      box-shadow:0 5px 15px 2px rgba(0,0,0,.35);
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+
+    }
+    :hover.link{
+      background-color: #1079a2;
+    }
+    .footer {
+      padding: 20px;
+      text-align: center;
+      color: #ffffff;
+      font-size: 12px;
+      border-top: 1px solid #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>ELEARNING</h1>
+  </div>
+  <div class="content">
+    <p>Xin chào, {{email}} <span style="font-weight: bold;"> {{email}} </span>,</p>
+    <p>Cám ơn bạn đã tham gia khóa học: <span style="font-weight: bold;"> {{courseName}} </span> </p>
+    <p>Chúc bạn học được nhiều kiến thức hơn và kết nối để nhận được nhiều hỗ trợ!</p>
+    <p style="margin-top: 30px; margin-bottom: 30px;"><a href="{{link_open_course}} " class="link">Mở khóa học</a></p>
+
+    <p>Cám ơn đã ủng hộ các khóa học nhé !</p>
+  </div>
+  <div class="footer">
+    <p>Trân trọng,<br>ELearning Account Center</p>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<div class="  border-b-2 border-border-color px-2  ">
+    <div class="flex gap-x-5 flex-wrap mt-3 pb-1">
+        <div class="w-[55px] h-[55px] ">
+            <img [src]="environment.profilePictureApi+answer.user.profilePicture" class="rounded-full h-full w-full object-cover border-[1px] border-custom-gray shadow-md shadow-custom-gray">
+        </div>
+        <div class="flex-1 bg-gray-100  p-2 rounded-md flex items-center" *ngIf="!isShowEditAnswerForm">
+            <div class="  flex-1 ">
+                <h2>{{answer.user.fullName}} <span *ngIf="answer.user.id == answer.course.instructor.id" class="text-[16px] text-delete-btn font-medium"> (Tác giả khóa học)</span></h2>
+
+                <div class="mt-1 w-full">
+                    <div class=" line-clamp-2" #textContent [ngClass]="{ 'line-clamp-none': showFullText }">
+                        {{ answer.content }}
+                    </div>
+
+                    <button *ngIf="isClamped" class="text-active-btn text-[14px]" (click)="toggleText()">
+                        {{ showFullText ? 'Ẩn bớt' : 'Đọc tiếp' }}
+                    </button>
+                </div>
+
+                <div class="mt-2 w-full flex gap-x-10">
+
+                    <span class="text-[14px] flex items-center">{{answer.createdTime }}</span>
+                    <span class="text-[14px] flex items-center text-active-btn hover:text-active-btn-h" *ngIf="loggedUser!.id == answer.user.id" (click)="isShowEditAnswerForm = !isShowEditAnswerForm">Chỉnh sửa </span>
+                    <span class="text-[14px] flex items-center text-red-500 hover:text-red-600" *ngIf="loggedUser!.id == answer.user.id" (click)="onDeleteAnswer()">Xóa</span>
+                    <span class="text-[14px] flex items-center text-active-btn hover:text-active-btn-h"  (click)="isOpenReportForm = !isOpenReportForm; reportForm.reset()">Báo cáo</span>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="isShowEditAnswerForm" class="flex-1" @slideToggle2>
+            <form [formGroup]="editAnswerForm">
+                <div class="mt-3">
+                    <label class="text-[16px] font-semibold">Nội dung câu hỏi</label>
+                    <textarea class="w-full border-2 border-custom-gray rounded-md p-2.5 mt-3 " formControlName="content"></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button class="py-1.5 px-5 bg-active-btn text-text-white hover:bg-active-btn-h mt-1 rounded-md" (click)="editAnswer()">
+                        Lưu câu trả lời
+                    </button>
+                    <button class="py-1.5 px-5 bg-red-500 text-text-white hover:bg-red-600 mt-1 rounded-md ml-2" (click)="isShowEditAnswerForm = !isShowEditAnswerForm">
+                        Hủy
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+
+</div>
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.3)] flex items-center justify-center" *ngIf="isOpenReportForm">
+    <div class="bg-white p-5 rounded-md shadow-gray-400 shadow-md w-[700px]">
+        <h2 class="text-center">Báo cáo câu trả lời</h2>
+        <form [formGroup]="reportForm">
+            <div class="mt-5">
+                <label  class="block text-base font-[600] mt-15 ">Lý do báo cáo</label>
+                <textarea formControlName="reason" class="w-full h-[100px] border-custom-gray border-2 shadow-gray-400 shadow-md mt-5 p-5"></textarea>
+            </div>
+            <div class="acction-btn mt-10 flex justify-center gap-10">
+                <button class="py-2.5 px-14 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="reportAnswer()" >Báo cáo</button>
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" (click)="isOpenReportForm = !isOpenReportForm" >Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>

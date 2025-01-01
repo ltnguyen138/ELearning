@@ -1,0 +1,189 @@
+<div class="mt-5 mx-auto shadow-gray-400 shadow-md border-[2px] border-border-color bg-white p-4 md:p-10 max-w-[700px] ">
+    <div class="">
+        <h2 class="text-center">Tổng quan khóa học</h2>
+    </div>
+    <form [formGroup]="courseForm" class="mt-5">
+        <div class="w-full  mt-8" *ngIf="mode ==='edit'">
+            <label  class="block text-base font-[600] mt-15 ">Ảnh khóa học</label>
+            <div class=" mt-5 flex justify-center md:justify-start">
+                <img [src]="courseImageUrl" alt="avatar" class="w-[300px] h-[200px] border-custom-gray border-2 shadow-gray-400 shadow-md">
+            </div>
+            <div class=" mt-5 flex gap-3  justify-center md:justify-start" >
+                <label class="w-[200px] cursor-pointer bg-active-btn text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 hover:bg-active-btn-h transition gap-3">
+                    <i class="fa-solid fa-arrow-up-from-bracket fa-lg"></i>
+                    <span>Đổi ảnh đại diện</span>
+                    <input type="file" class="hidden" (change)="onUploadImg($event)">
+                </label>
+                <button class="px-4 py-2.5 rounded-lg flex items-center bg-primary-color hover:bg-active-btn-h text-white disabled:bg-undo-btn " [disabled]="!isUpdateImage" (click)="saveCourseImage()" >Lưu ảnh</button>
+            </div>
+        </div>
+        <div class=" mt-10 ">
+            <div class="form-item">
+                <label for="name" class="block text-base font-[600]  ">Tên khóa học</label>
+                <div class="mt-2">
+                    <input id="name" name="name" type="text"
+                           class="
+                               block
+                               w-full
+                               py-2.5 px-3
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                           formControlName="name"
+                    >
+                </div>
+            </div>
+
+            <div class="form-item mt-5">
+                <label for="name" class="block text-base font-[600]  ">Chủ đề</label>
+                <div class="mt-2">
+<!--                    <select id="name" name="name" type="number"-->
+<!--                            class="-->
+<!--                               block-->
+<!--                               w-full-->
+<!--                               py-2.5 px-3-->
+<!--                               bg-[FAFAFA]-->
+<!--                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm-->
+<!--                               focus:border-b-[3px] focus:border-primary-color-->
+<!--                               transition-all duration-100 ease-out-->
+<!--                               "-->
+<!--                            formControlName="categoryId"-->
+<!--                    >-->
+<!--                        <ng-container *ngFor="let category of categories">-->
+<!--                            <option [value]="category.id" [selected]="category.id === courseForm.get('categoryId')?.value" >{{category.name}}</option>-->
+<!--                        </ng-container>-->
+<!--                    </select>-->
+                    <p-autoComplete
+                            class="block
+                                    w-full
+
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                            formControlName="categoryId"
+                            [suggestions]="suggestionCategories"
+                            (completeMethod)="searchCategory($event)"
+                            [dropdown]="true"
+                            (onSelect)="selectCategory()"
+                            [forceSelection]="true"
+                            optionLabel="name"
+
+                    />
+                    <div *ngIf="isOtherCategory">
+                        <input
+                                class="block
+                                       w-full
+                                       mt-2
+                                       py-2.5 px-3
+                                       bg-[FAFAFA]
+                                       border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                       focus:border-b-[3px] focus:border-primary-color
+                                       transition-all duration-100 ease-out"
+                                type="text"
+                                pInputText
+
+                                placeholder="Nhập chủ đề mới"
+                                formControlName="categoryName"
+                        />
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-item mt-5">
+                <label for="name" class="block text-base font-[600]  ">Giới thiệu</label>
+                <div class="mt-2">
+                <textarea id="name" name="name" type="text"
+                          class="
+                               block
+                               w-full
+                               py-2.5 px-3
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                                h-[200px]
+                               "
+                          formControlName="description"
+                ></textarea>
+                </div>
+            </div>
+            <div class="form-item mt-5">
+                <label for="skillLevel" class="block text-base font-[600]  ">Trình độ</label>
+                <div class="mt-2">
+                    <select id="skillLevel" name="skillLevel"
+                            class="
+                               block
+                               w-full
+                               py-2.5 px-3
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                            formControlName="skillLevel"
+                    >
+                        <ng-container *ngFor="let skillLevel of skillLevels">
+                            <option [value]="skillLevel.key" >{{skillLevel.value}}</option>
+                        </ng-container>
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-item mt-5">
+                <label for="name" class="block text-base font-[600]  ">Giá</label>
+                <div class="mt-2">
+                    <input id="name" name="name" type="number"
+                           class="
+                               block
+                               w-full
+                               py-2.5 px-3
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                           formControlName="price"
+                    >
+                </div>
+            </div>
+            <div class="mt-5  flex flex-wrap" *ngIf="mode == 'edit'">
+                <label  class=" block text-base font-[600] shrink-0 w-[220px] ">Lần cập nhật gần nhất: </label>
+                <span class="">{{currentCourse?.updatedTime}}</span>
+            </div>
+            <div class="mt-5  flex flex-wrap" *ngIf="mode == 'edit'">
+                <label  class=" block text-base font-[600] shrink-0 w-[220px] ">Trạng thái kiểm duyệt: </label>
+                <span class="">{{getApprovalStatusEnum(currentCourse?.approvalStatus)}}</span>
+            </div>
+            <div class="mt-5  flex flex-wrap" *ngIf="mode == 'edit'">
+                <label  class=" block text-base font-[600] shrink-0 w-[220px] ">Tổng số bài giảng: </label>
+                <span class="">{{countLecture}}</span>
+            </div>
+            <div class="mt-5  flex flex-wrap" *ngIf="mode == 'edit'">
+                <label  class=" block text-base font-[600] shrink-0 w-[220px] ">Số bài giảng chưa duyệt: </label>
+                <span class="">{{countPendingLecture}}</span>
+            </div>
+            <div class="mt-5  flex flex-wrap" *ngIf="mode == 'edit'">
+                <label  class=" block text-base font-[600] shrink-0 w-[220px] ">Số bài giảng được duyệt: </label>
+                <span class="">{{countApprovedLecture}}</span>
+            </div>
+
+            <div class="acction-btn mt-10 flex justify-center gap-10 flex-wrap">
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" routerLink="/instructor/courses" >
+                    Quay lại</button>
+                <button class="py-2.5 px-14 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="saveCourse()" >Lưu</button>
+                <button class="py-2.5 px-14 text-white font-semibold bg-red-500 hover:bg-red-600  rounded-md shadow-gray-400 shadow-md " (click)="deleteCourse()" *ngIf="mode == 'edit'" >Xóa</button>
+
+            </div>
+            <div class="acction-btn mt-5 flex justify-center gap-10 flex-wrap">
+                <button class="py-2.5 px-14 text-text-color font-semibold bg-white border-[2px] border-active-btn hover:bg-active-btn-h  hover:text-white rounded-md shadow-gray-400 shadow-md " (click)="toggleModeration()" *ngIf="mode == 'edit'" >
+                    {{currentCourse?.moderationRequested ? 'Hủy yêu cầu kiểm duyệt' : 'Yêu cầu kiểm duyệt'}}</button>
+
+            </div>
+        </div>
+    </form>
+</div>
+

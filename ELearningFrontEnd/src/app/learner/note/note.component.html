@@ -1,0 +1,100 @@
+<p-confirmDialog [style]="{'max-width': '600px'}" ></p-confirmDialog>
+<div class=" max-w-[1000px]  mx-auto mt-5 px-2">
+
+    <div class="mt-3 flex flex-wrap gap-x-10 gap-y-5 border-b-[2px]  py-5   items-center">
+        <div class="search">
+            <input type="text"
+                   class="
+                        header-search-input
+                        w-[240px]
+                        rounded-xl
+                        rounded-r-none
+                        p-2.5
+                        px-1.5
+                        shadow-sm
+                        border-2
+                        border-r-0
+                        border-custom-gray
+                        text-base placeholder:text-gray-500
+                        focus:outline-0
+                   "
+                   placeholder="Tìm kiếm ..." name="keywork" [(ngModel)]="keywords"
+
+            />
+            <button class="header-search-btn bg-active-btn py-2.5 px-4 rounded-r-xl border-2 border-l-0 border-custom-gray hover:bg-active-btn-h" (click)="search()">
+                <i class="fa-solid fa-magnifying-glass  fa-lg" style="color: #f2f2f2;"></i>
+            </button>
+        </div>
+        <div>
+            <select class="header-search-input rounded-xl py-3 px-3 shadow-sm border-2 border-custom-gray text-base placeholder:text-gray-500 focus:outline-0 hover:bg-gray-100"
+                    [(ngModel)]="lectureIdFilter"
+                    (change)="changeLectureFilter()"
+            >
+                <option  [value]="-1">Tất cả bài giảng</option>
+                <option [value]="lectureId">Bài giảng hiện tại  </option>
+            </select>
+        </div>
+        <div>
+            <button class=" text-delete-btn font-semibold bg-white hover:bg-gray-300" (click)="clearFilter()">
+                Xóa Bộ lọc
+            </button>
+        </div>
+
+    </div>
+
+    <div>
+        <div class="flex justify-between items-center flex-wrap">
+            <h2 *ngIf="lectureIdFilter != -1" class="text-[20px] mt-5">Có tất cả {{this.totalNotes}} ghi chú <span *ngIf="searchKey !=''">chứa từ khóa "{{searchKey}}"</span> trong bài giảng này</h2>
+            <h2 *ngIf="lectureIdFilter == -1" class="text-[20px] mt-5">Có tất cả {{this.totalNotes}} ghi chú  <span *ngIf="searchKey !=''">chứa từ khóa "{{searchKey}}"</span> trong khóa học này</h2>
+            <button class="py-2 px-10 bg-active-btn text-text-white hover:bg-active-btn-h mt-5 rounded-md" (click)="isShowNoteForm = !isShowNoteForm">
+                Thêm ghi chú
+            </button>
+        </div>
+        <div class="mt-8 flex gap-x-10" *ngIf="isShowNoteForm" @slideToggle >
+            <div>
+                <span class="text-[18px] font-semibold">{{minutes}}:{{seconds}}</span>
+            </div>
+            <div class="flex-1">
+                <form [formGroup]="noteForm">
+                    <div class="">
+                        <textarea class="w-full border-2 border-custom-gray rounded-md p-2.5" formControlName="title"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button class="py-1.5 px-5 bg-active-btn text-text-white hover:bg-active-btn-h mt-1 rounded-md" (click)="createNote()">
+                            Lưu ghi chú
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="mt-5">
+        <ng-container *ngFor="let note of notes">
+            <div class=" border-b-2 border-border-color px-2 py-2  cursor-pointer flex items-start gap-x-10" @slideToggle>
+                <div >
+                    <span class="text-[18px] font-semibold text-wrap">{{this.formatDuration(note.duration)}}</span>
+
+                </div>
+                <div class="flex-1 ml-2">
+                    <div class="flex gap-x-5">
+                        <span class="flex-1 text-[18px] font-semibold hover:text-active-btn-h" (click)="updateCurrentTime(note.duration, note.lecture.id!)">Bài giảng: {{note.lecture.name}}</span>
+                        <button class="text-delete-btn" (click)="delete(note.id)">
+                            <i class="fa-solid fa-trash fa-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-[#E7E7E7] mt-2 px-2 py-2.5">
+                        <span class="text-[16px]">{{note.title}}</span>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+    </div>
+    <div>
+        <button class="w-[70%] py-2 border-[2px] border-custom-gray mx-auto block font-semibold mt-5 hover:bg-gray-200" (click)="getMoreNotes()" *ngIf="totalPages>1 &&totalPages != noteQuery.page">
+            Hiển thị thêm
+        </button>
+    </div>
+</div>

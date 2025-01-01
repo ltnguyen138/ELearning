@@ -1,0 +1,112 @@
+<div class="mt-5 border-[1px] border-neutral-400 py-5 px-3 bg-white ">
+    <div class="flex justify-between flex-wrap" *ngIf="!isOpenLectureForm" >
+        <div class="flex gap-10 flex-wrap items-center"   >
+            <div class="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-green-700 shrink-0" title="Bài giảng đã được phê duyệt" *ngIf="lecture.approvalStatus == ApprovalStatusEnum.APPROVED">
+                <i class="fa-solid fa-check text-white"></i>
+            </div>
+            <div class="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-gray-600 shrink-0" title="Bài giảng đang chờ phê duyệt" *ngIf="lecture.approvalStatus == ApprovalStatusEnum.PENDING">
+                <i class="fa-solid fa-check text-white"></i>
+            </div>
+            <div class="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-delete-btn shrink-0" title="Bài giảng không được phê duyệt" *ngIf="lecture.approvalStatus == ApprovalStatusEnum.REJECTED">
+                <i class="fa-solid fa-x text-white"></i>
+            </div>
+
+            <span class="font-semibold"> {{lecture.name}}</span>
+            <button  class="cursor-pointer hover:text-active-btn" (click)="toggleLectureForm()">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+            <button  class="cursor-pointer hover:text-delete-btn" (click)="onRemoveLecture()">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+        <button class="hover:text-active-btn" (click)="toggleDisplayTable()">
+            <i *ngIf="isShowTable" class="fa-solid fa-angle-down"></i>
+            <i *ngIf="!isShowTable" class="fa-solid fa-angle-up"></i>
+        </button>
+    </div>
+    <div class=" w-full md:w-[80%]" *ngIf="isOpenLectureForm" >
+
+        <form [formGroup]="lectureForm">
+            <div class="flex gap-x-10 gap-y-5  items-center ">
+                <label class="font-semibold whitespace-nowrap">Bài {{index+1}}:  </label>
+                <input id="name" name="name" type="text"
+                       class="
+                               block
+                               p-1.5
+                               w-full
+                               bg-[FAFAFA]
+                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                               focus:border-b-[3px] focus:border-primary-color
+                               transition-all duration-100 ease-out
+                               "
+                       formControlName="name"
+                >
+            </div>
+            <div class="flex gap-10  items-center mt-3 ">
+                <label class="font-semibold whitespace-nowrap">Bài giảng xem trước:  </label>
+                <input type="checkbox" class="form-checkbox hover:cursor-pointer h-[26px] w-[26px] focus:ring focus:ring-blue-600 focus:ring-opacity-50" formControlName="preview">
+            </div>
+            <div class="flex justify-end  gap-y-2 gap-x-5 mt-3 flex-wrap">
+                <button class="py-1.5 px-14 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="saveLecture()"  >Lưu</button>
+                <button class="py-1.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" *ngIf="lecture.id !==null" (click)="toggleLectureForm()">Hủy</button>
+                <button class="py-1.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" *ngIf="lecture.id ===null" (click)="onRemoveLecture()">Hủy</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="mt-5 border-t-[1px] border-neutral-400 overflow-x-auto" *ngIf="isShowTable" @slideToggle>
+        <table class="min-w-full bg-white border border-gray-300 ">
+            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <th class="py-3 px-6 w-1/6 text-center border border-border-color"></th> <!-- Cột chiếm 1/4 độ rộng -->
+                <th class="py-3 px-6 w-1/4 text-center border border-border-color">Tên file</th>
+                <th class="py-3 px-6 w-1/4 text-center border border-border-color">Tiến trình</th>
+                <th class="py-3 px-6 w-1/6 text-center border border-border-color"></th>
+            </tr>
+            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class=" font-semibold px-3 py-2 border border-slate-30"> Bài giảng</td>
+                <td class=" px-3 py-2 border border-slate-30 text-active-btn hover:text-active-btn-h cursor-pointer" *ngIf="lecture.id && videoName && !isUploadingVideo" (click)="previewLecture()"> {{videoName}} </td>
+                <td class=" px-3 py-2 border border-slate-30" *ngIf="!videoName || isUploadingVideo"> {{videoName}} </td>
+                <td class="px-3 py-2  border border-slate-30">{{uploadVideoProgress}}%</td>
+                <td class="px-3 py-2 border border-slate-30">
+                    <div *ngIf="!isUploadingVideo">
+                        <label class="max-w-[200px] cursor-pointer bg-active-btn text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 hover:bg-active-btn-h transition gap-3">
+                            <i class="fa-solid fa-arrow-up-from-bracket fa-lg"></i>
+                            <span>Upload video</span>
+                            <input type="file" class="hidden" (change)="onUploadVideo($event)" >
+                        </label>
+                    </div>
+                    <div class="flex flex-wrap gap-x-5" *ngIf="isUploadingVideo">
+                        <button class="bg-active-btn hover:bg-active-btn-h text-white px-5 py-2 rounded " (click)="saveVideo()">Lưu</button>
+                        <button class="bg-delete-btn hover:bg-delete-btn-h text-white px-5 py-2 rounded " (click)="cancelUploadVideo()">Hủy</button>
+                    </div>
+
+                </td>
+            </tr>
+            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class=" font-semibold px-3 py-2 border border-slate-30"> Tài liệu</td>
+                <td class=" px-3 py-2 border border-slate-30" > {{documentName}} </td>
+                <td class=" px-3 py-2 border-slate-30">{{uploadDocumentProgress}}% </td>
+                <td class=" px-3 py-2 border border-slate-30">
+                    <div *ngIf="!isUploadingDocument">
+                        <label class=" max-w-[200px] cursor-pointer bg-active-btn text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 hover:bg-active-btn-h transition gap-3">
+                            <i class="fa-solid fa-arrow-up-from-bracket fa-lg"></i>
+                            <span>Upload tài liệu</span>
+                            <input type="file" class="hidden" (change)="onUploadDocument($event)" >
+                        </label>
+                    </div>
+                    <div class="flex flex-wrap gap-x-5" *ngIf="isUploadingDocument">
+                        <button class="bg-active-btn hover:bg-active-btn-h text-white px-5 py-2 rounded " (click)="saveDocument()">Lưu</button>
+                        <button class="bg-delete-btn hover:bg-delete-btn-h text-white px-5 py-2 rounded " (click)="cancelUploadDocument()">Hủy</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="fixed inset-0  bg-[rgba(12,12,12,0.6)] flex items-center justify-center " *ngIf="isLoaded">
+    <div class=" top-[2px] left-[48%]" >
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-blue-600"></div>
+    </div>
+</div>
+<router-outlet></router-outlet>

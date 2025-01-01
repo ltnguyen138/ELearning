@@ -1,0 +1,125 @@
+<div class="flex items-center  min-w-full  justify-center" *ngIf="!isAfterSubmit">
+    <div class="flex  flex-col justify-center min-w-full  sm:min-w-[700px] sm:mt-[50px]  sm:min-h-full py-9 px-2 sm:border-4 rounded-[26px] m-4 border-primary-color sm:shadow-2xl  ">
+        <div class="mx-auto w-full ">
+            <img class="mx-auto h-40 w-auto shadow-custom-gray " src="../../../../assets/images/logo.png" alt="Your Company">
+            <h2 class="mt-10 text-center text-[26px] font-bold leading-9  ">Đăng ký và bắt đầu học</h2>
+        </div>
+
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
+            <form class="space-y-6" [formGroup]="registerForm">
+                <div>
+                    <label for="fullName" class="block text-base font-[500]  ">Họ và tên</label>
+                    <div class="mt-2">
+                        <input id="fullName" name="fullName" type="text" autocomplete="fullName" required
+                               class="
+                                       block
+                                       w-full
+                                       py-2.5 px-1.5
+                                       bg-[FAFAFA]
+                                       border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color shadow-gray-400 shadow
+                                       focus:border-b-[3px] focus:border-primary-color
+                                       transition-all duration-100 ease-out
+                               "
+                               formControlName="fullName"
+                        >
+                        <div *ngIf="registerForm.get('fullName')!.invalid && registerForm.get('fullName')!.touched" class="text-red-600 text-sm">
+                            Họ và tên không duoc để trống
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="email" class="block text-base font-[500]  ">Email</label>
+                    <div class="mt-2">
+                        <input id="email" name="email" type="email" autocomplete="email" required
+                               class="
+                                       block
+                                       w-full
+                                       py-2.5 px-1.5
+                                       bg-[FAFAFA]
+                                       border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color shadow-gray-400 shadow
+                                       focus:border-b-[3px] focus:border-primary-color
+                                       transition-all duration-100 ease-out
+                               "
+                               formControlName="email"
+                        >
+                        <div *ngIf="registerForm.get('email')!.invalid && registerForm.get('email')!.touched" class="text-red-600 text-sm">
+                            Email không hợp lệ
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between">
+                        <label for="password" class="block text-base ">Mật khẩu</label>
+                    </div>
+                    <div class="mt-2 relative">
+                        <input id="password" name="password" [type]="isShowPassword ? 'text' : 'password'" autocomplete="current-password" required
+                               class="
+                                       block
+                                       w-full
+                                       py-2.5 px-1.5
+                                       bg-[FAFAFA]
+                                       border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color shadow-gray-400 shadow
+                                       focus:border-b-[3px] focus:border-primary-color
+                                       transition-all duration-100 ease-out
+                               "
+                               formControlName="password">
+                        <div *ngIf="registerForm.get('password')!.invalid && registerForm.get('password')!.touched" class="text-red-600 text-sm">
+                            Mật khẩu phải có ít nhất 6 kí tự gồm chữ in hoa, chữ thường, số và kí tự đặc biệt
+                        </div>
+                        <button
+                                type="button"
+                                class="absolute right-0 top-1 mt-2 mr-2"
+                                (click)="isShowPassword = !isShowPassword"
+                        >
+                            <span *ngIf="isShowPassword" class="text-blue-950"><i class="fa-solid fa-eye-slash"></i></span>
+                            <span *ngIf="!isShowPassword" class="text-blue-950"><i class="fa-solid fa-eye"></i></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="flex w-full justify-center rounded-md bg-active-btn px-3 p-2.5 text-base font-semibold  text-white shadow-sm hover:bg-active-btn-h "
+                            (click)="register()"
+                    >
+                        Đăng ký
+                    </button>
+                </div>
+            </form>
+
+            <p class="mt-10 text-center text-base">
+                Bạn đã có tài khoản?
+                <a routerLink="/login" class="font-semibold text-link-color text-base hover:text-link-color-h">Đăng nhập</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="min-h-[800px]" *ngIf="isAfterSubmit">
+    <div class="max-w-[600px] w-[98%] border-4 rounded-[26px] m-4 border-primary-color mx-auto mt-10 py-8 px-10 " >
+        <div >
+            <div class="">
+                <span class="block">Cám ơn bạn đã đăng ký tài khoản tại SkillSpring. Để có thể tiếp tục vui lòng kiểm tra email để xác minh tài khoản của mình. </span>
+
+                <span >Nếu bạn không nhận được email, vui lòng kiểm tra thư mục spam hoặc thử lại sau (
+                <span class="text-active-btn">{{timeLeft}}s</span>
+                )
+            </span>
+            </div>
+            <div class="mt-4">
+                <button
+                        class="flex w-full justify-center rounded-md bg-active-btn px-3 p-2.5 text-base font-semibold  text-white shadow-sm hover:bg-active-btn-h disabled:bg-gray-400"
+                        [disabled]="timeLeft > 0"
+                        (click)="sendVerificationEmail()"
+                >
+                    Gửi lại email
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fixed inset-0  bg-[rgba(12,12,12,0.6)] flex items-center justify-center " *ngIf="isLoaded">
+    <div class=" top-[2px] left-[48%]" >
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-blue-600"></div>
+    </div>
+</div>

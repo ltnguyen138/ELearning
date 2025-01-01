@@ -1,0 +1,63 @@
+
+<div class="mt-5  shadow-gray-400 shadow-md border-[2px] border-border-color bg-white p-4 md:p-10 overflow-auto">
+
+    <div class="">
+        <h2 class="text-center">Chương trình giảng dạy</h2>
+    </div>
+    <div>
+        <div class="flex items-center ">
+            <!-- Phần bên trái: Nút upload file Excel -->
+            <label class="flex items-center bg-blue-500 text-white px-4 py-2.5 rounded-l-lg cursor-pointer hover:bg-blue-600 transition gap-2">
+                <i class="fa-solid fa-file-excel fa-lg"></i>
+                <span>Tạo hàng loạt</span>
+                <input type="file" class="hidden" accept=".xlsx, .xls" (input)="uploadExcelFile($event)">
+            </label>
+
+            <!-- Phần bên phải: Nút tải file mẫu khi hover -->
+            <div class="relative group">
+                <!-- Nút chính bên phải -->
+                <button class="bg-gray-300 text-gray-800 px-3 py-2.5 rounded-r-lg hover:bg-gray-400 transition">
+                    <i class="fa-solid fa-download fa-lg"></i>
+                </button>
+                <!-- Nút tải file mẫu ẩn, chỉ hiển thị khi hover vào nút chính bên phải -->
+                <button
+                        class="absolute w-[150px] left-0 top-full mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-active-btn-h" (click)="downloadTemplate()">
+                    Tải file mẫu
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5 min-w-[800px]"  cdkDropList (cdkDropListDropped)="drop($event)">
+
+
+        <ng-container *ngIf="chapters.length !==0">
+            <ng-container *ngFor="let chapter of chapters , let i = index">
+                <div cdkDrag *ngIf="chapter.id != null">
+                    <app-instructor-chapter
+                            [chapter]="chapter"
+                            [index]="i + 1"
+                            (removeChapter)="onDeleteChapter($event)">
+                    </app-instructor-chapter>
+                </div>
+                <div *ngIf="chapter.id == null">
+                    <app-instructor-chapter
+                            [chapter]="chapter"
+                            [index]="i + 1"
+                            (removeChapter)="onDeleteChapter($event)"
+                            (newChapter)="newChapter($event)"
+                    >
+                    </app-instructor-chapter>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <div class="mt-5">
+        <button class="py-2.5 px-14 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="addChapter()">Thêm chương</button>
+    </div>
+</div>
+
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.1)] flex items-center justify-center " *ngIf="isLoaded">
+    <div class=" top-[2px] left-[48%]" >
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-blue-600"></div>
+    </div>
+</div>

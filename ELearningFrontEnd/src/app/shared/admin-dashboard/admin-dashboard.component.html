@@ -1,0 +1,78 @@
+
+<div class=" px-[10px] py-[18px] flex justify-center border-b-[2px] border-custom-gray shadow-sm shadow-custom-gray cursor-pointer" (click)="router.navigate(['/admin/dashboard'])">
+    <h2>Chế độ quản lý</h2>
+</div>
+
+<div class="flex flex-col text-text-color text-[18px] mt-5">
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/users"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/users')}"
+    >
+        Người dùng
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/categories"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/categories')}"
+    >
+        Chủ đề
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/courses"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/courses')}"
+    >
+        Khóa học
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/orders"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/orders')}"
+    >
+        Đơn hàng
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/discounts"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/discounts')}"
+    >
+        Mã giảm giá
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/statistic"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/statistic')}"
+    >
+        Thống kê doanh thu
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/reviews"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/reviews')}"
+    >
+        Đánh giá
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/question-answer"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/question-answer')}"
+    >
+        Hỏi & đáp
+    </a>
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-t-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/reports"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/reports')}"
+    >
+        Xử lý vi phạm
+    </a>
+
+    <a
+            class=" pr-[10px] pl-[20px]   py-[16px] border-[1px]  border-custom-gray shadow-sm shadow-custom-gray font-semibold hover:scale-105 transition-all duration-300 hover:bg-active-btn-h hover:text-white"
+            routerLink="/admin/cskh"
+            [ngClass]="{'bg-active-btn text-white': router.url.startsWith('/admin/cskh')}"
+    >
+        CSKH
+    </a>
+</div>

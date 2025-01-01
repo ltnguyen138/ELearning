@@ -1,0 +1,157 @@
+<div class="overflow-auto" *ngIf="currentCourse">
+    <div class="mt-5 mx-auto shadow-gray-400 shadow-md border-[2px] border-border-color bg-white p-4 md:p-10 max-w-[700px] ">
+        <div class="">
+            <h2 class="text-center">Tổng quan khóa học</h2>
+        </div>
+
+        <div class="mt-5">
+            <label  class="block text-base font-[600] mt-15 ">Ảnh khóa học</label>
+            <div class=" mt-5 flex
+            justify-center md:justify-start">
+                <img [src]="environment.apiGetImageCourse+ currentCourse.image" alt="avatar" class="w-[300px] h-[200px] border-custom-gray border-2 shadow-gray-400 shadow-md">
+            </div>
+        </div>
+        <div class="mt-10  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Tên khóa học: </label>
+            <span class="">{{currentCourse.name}}</span>
+        </div>
+
+        <div class="mt-5  flex flex-wrap items-center">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Chủ đề: </label>
+            <span class="">{{currentCourse.category.name}}</span>
+            <span class="text-delete-btn text-[16px] lg:ml-5" *ngIf="currentCourse.category.temporary">Chủ đề tạm thời</span>
+        </div>
+        <div class="mt-1  flex flex-wrap items-center gap-x-3 lg:gap-x-8">
+            <button class="py-2 px-2 text-white font-semibold bg-active-btn border-2 border-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md disabled:bg-gray-300 disabled:text-text-color" *ngIf="currentCourse.category.temporary" (click)="approveTemporary()">Phê duyệt chủ đề</button>
+            <button class="py-2 px-2 text-active-btn border-2 border-active-btn font-semibold hover:text-white hover:bg-active-btn  rounded-md shadow-gray-400 shadow-md disabled:bg-gray-300 disabled:text-text-color"  (click)="isOpenChangeCategoryModal = !isOpenChangeCategoryModal" >Đổi chủ đề</button>
+        </div>
+
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Trạng thái kiểm duyệt: </label>
+            <span class="">{{getApprovalStatusEnum(currentCourse.approvalStatus)}}</span>
+        </div>
+
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Số bài giảng chưa duyệt: </label>
+            <span class="">{{countPendingLecture}}</span>
+        </div>
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Số bài giảng được duyệt: </label>
+            <span class="">{{countApprovedLecture}}</span>
+        </div>
+
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Giá: </label>
+            <span class="">{{currentCourse.price | number}} VNĐ</span>
+        </div>
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Giới thiệu: </label>
+            <span class="">{{currentCourse.description}}</span>
+        </div>
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Trình độ: </label>
+            <span class="">{{getSkillLevel(currentCourse.skillLevel)}}</span>
+        </div>
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Ngày tạo: </label>
+            <span class="">{{currentCourse.createdTime }}</span>
+        </div>
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Lần cập nhật gần nhất: </label>
+            <span class="">{{currentCourse.updatedTime }}</span>
+        </div>
+        <div class="mt-5  flex flex-wrap">
+            <label  class=" block text-base font-[600] shrink-0 w-[200px] ">Số lượng học viên: </label>
+            <span class="">{{currentCourse.purchasedCount }}</span>
+        </div>
+        <div class="acction-btn mt-10 flex justify-center gap-10">
+            <button class="py-2.5 lg:px-14 px-8 text-white font-semibold bg-active-btn hover:bg-active-btn-h  rounded-md shadow-gray-400 shadow-md disabled:bg-gray-300 disabled:text-text-color" (click)="approveCourse()" [disabled]="currentCourse.approvalStatus == ApprovalStatusEnum.APPROVED">Phê duyêt</button>
+            <button class="py-2.5 lg:px-14 px-8 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md disabled:bg-gray-300 disabled:text-text-color" (click)="isOpenRejectModal = !isOpenRejectModal" [disabled]="currentCourse.approvalStatus == ApprovalStatusEnum.REJECTED" >Từ chối</button>
+        </div>
+        <div class="acction-btn mt-10 flex justify-center gap-10">
+            <button class="py-2.5 px-14 text-text-color border-delete-btn border font-semibold bg-gray-100 hover:bg-red-50  rounded-md shadow-gray-400 shadow-md" (click)="isOpenDeleteModal = !isOpenDeleteModal" *ngIf="loggedUser!.role!.name =='ROOT'">Xóa khóa học</button>
+            <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" routerLink="/admin/courses" >Quay lại</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.3)] flex items-center justify-center" *ngIf="isOpenRejectModal">
+    <div class="bg-white p-5 rounded-md shadow-gray-400 shadow-md w-[700px]">
+        <h2 class="text-center">Từ chối khóa học</h2>
+        <form [formGroup]="approvalForm">
+            <div class="mt-5">
+                <label  class="block text-base font-[600] mt-15 ">Lý do từ chối</label>
+                <textarea formControlName="comment" class="w-full h-[100px] border-custom-gray border-2 shadow-gray-400 shadow-md mt-5 p-5"></textarea>
+            </div>
+            <div class="acction-btn mt-10 flex justify-center gap-10">
+                <button class="py-2.5 px-14 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="rejectCourse()" >Từ chối</button>
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" (click)="isOpenRejectModal = !isOpenRejectModal" >Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.3)] flex items-center justify-center" *ngIf="isOpenDeleteModal">
+    <div class="bg-white p-5 rounded-md shadow-gray-400 shadow-md w-[700px]">
+        <h2 class="text-center">Xóa khóa học</h2>
+        <form [formGroup]="deleteForm">
+            <div class="mt-5">
+                <label  class="block text-base font-[600] mt-15 ">Lý do xóa khóa học</label>
+                <textarea formControlName="reason" class="w-full h-[100px] border-custom-gray border-2 shadow-gray-400 shadow-md mt-5 p-5"></textarea>
+            </div>
+            <div class="acction-btn mt-10 flex justify-center gap-10">
+                <button class="py-2.5 px-14 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="deleteCourse()" >Xóa khóa học</button>
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" (click)="isOpenDeleteModal = !isOpenDeleteModal" >Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="fixed inset-0  bg-[rgba(1,1,1,0.3)] flex items-center justify-center" *ngIf="isOpenChangeCategoryModal">
+    <div class="bg-white p-5 rounded-md shadow-gray-400 shadow-md w-[700px]">
+        <h2 class="text-center">Thay đổi chủ đê khóa học</h2>
+
+            <div class="mt-5">
+                <label  class="block text-base font-[600] mt-15 ">Chủ đề khóa học</label>
+                <p-autoComplete
+                        class="block
+                                    w-full
+
+                                    bg-[FAFAFA]
+                                    border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                    focus:border-b-[3px] focus:border-primary-color
+                                    transition-all duration-100 ease-out"
+                        [(ngModel)]="seletedCategory"
+                        [suggestions]="suggestionCategories"
+                        (completeMethod)="searchCategory($event)"
+                        [dropdown]="true"
+                        (onSelect)="selectCategory()"
+                        [forceSelection]="true"
+                        optionLabel="name"
+                />
+                <div *ngIf="isOtherCategory">
+                    <input
+                            class="block
+                                       w-full
+                                       mt-2
+                                       py-2.5 px-3
+                                       bg-[FAFAFA]
+                                       border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color rounded-md shadow-sm
+                                       focus:border-b-[3px] focus:border-primary-color
+                                       transition-all duration-100 ease-out"
+                            type="text"
+                            pInputText
+
+                            placeholder="Nhập chủ đề mới"
+                            [(ngModel)]="categoryName"
+                    />
+
+                </div>
+            </div>
+            <div class="acction-btn mt-10 flex justify-center gap-10">
+                <button class="py-2.5 px-14 text-white font-semibold bg-delete-btn hover:bg-delete-btn-h  rounded-md shadow-gray-400 shadow-md " (click)="updateCategoryCourse()" >Lưu</button>
+                <button class="py-2.5 px-10  font-semibold hover:bg-custom-gray rounded-md shadow-gray-400 shadow-md border-2 bg-gray-100" (click)="isOpenChangeCategoryModal = !isOpenChangeCategoryModal" >Hủy</button>
+            </div>
+
+    </div>
+</div>

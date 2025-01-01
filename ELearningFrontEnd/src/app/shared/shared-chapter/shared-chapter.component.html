@@ -1,0 +1,24 @@
+<div>
+    <div class="grid grid-cols-5 cursor-pointer group pb-2" (click)="isShowListLecture = !isShowListLecture">
+        <div class=" col-span-4 group-hover:text-active-btn-h">
+            <span class="block font-semibold">{{chapter.name}}</span>
+
+        </div>
+        <div class="col-span-1 flex justify-end items-center group-hover:text-active-btn-h" >
+            <i *ngIf="isShowListLecture" class="fa-solid fa-angle-down"></i>
+            <i *ngIf="!isShowListLecture" class="fa-solid fa-angle-up"></i>
+        </div>
+    </div>
+
+    <div *ngIf="isShowListLecture">
+        <ng-container *ngFor="let lecture of lectures, let i = index"  >
+            <div class="pt-4 pb-2 border-custom-gray border-t-[1px]  px-5 hover:text-active-btn-h cursor-pointer hover:bg-gray-50" (click)="linkQa(lecture.id)">
+                <div class="">
+                    <span class="text-wrap block">{{lecture.name}}</span>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+

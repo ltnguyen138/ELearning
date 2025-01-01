@@ -1,0 +1,128 @@
+<div class=" mt-10  md:max-w-[1500px]  mx-auto px-3 text-text-color mb-10 relative bg">
+    <div class="title  ">
+        <h1 class="leading-relaxed">Thanh toán</h1>
+    </div>
+    <div class="title border-b-[2px] border-border-color pb-5 mt-5">
+        <h2 class="leading-relaxed">Thông tin đặt hàng</h2>
+    </div>
+
+    <div class="grid lg:grid-cols-4 grid-cols-1 gap-y-5 gap-x-10">
+        <div class="col-span-1 lg:col-span-3">
+            <div class="mt-3">
+
+                <div class="overflow-x-auto  shadow-gray-400 shadow-md border-[2px] border-border-color ">
+
+                    <table class="min-w-[1000px] bg-white border border-gray-300 ">
+
+                        <tbody class="text-text-color text-base ">
+                        <ng-container *ngFor="let item of orderItems, let i = index">
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="p-3 w-1/6  px-6 text-left whitespace-nowrap">
+                                    <img [src]="environment.apiGetImageCourse+item.course.image" alt="" class="w-full h-24 object-cover border-[1px] border-custom-gray">
+                                </td>
+                                <td class="p-3 w-1/4  px-6 text-left ">{{ item.course.name }}</td>
+                                <td class="p-3 w-1/6  px-6 text-left whitespace-nowrap ">
+                                    <div class="flex flex-col justify-start">
+                                        <div *ngIf="item.code !==''" >
+                                            Đã áp dụng mã giảm giá: {{ item.code }}
+                                        </div>
+                                        <div>
+                                            <input id="code-{{ item.course.id }}" name="code-{{ item.course.id }}" type="text"
+                                                   [(ngModel)]="item.newCode"
+                                                   class="
+                                               w-2/3
+                                               py-2 px-1.5
+                                               bg-[FAFAFA]
+                                               border-[2px] border-border-color border-b-[1px] outline-0 border-b-primary-color  shadow-sm
+                                               focus:border-b-[3px] focus:border-primary-color
+                                               transition-all duration-100 ease-out
+                                               "
+                                                   placeholder="Nhập mã giảm giá"
+                                            >
+                                            <button class="py-2 px-4 text-white font-semibold bg-active-btn hover:bg-active-btn-h  shadow-gray-400" (click)="applyDiscount(item.newCode, item.course.id)" >Áp dụng</button>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td class="p-3 w-1/6  px-6 text-left whitespace-nowrap">
+                                    <div class="grid grid-cols-2 font-semibold gap-3" *ngIf="item.discountPrice>0">
+                                        <div class="col-span-1">Giá gốc: </div>
+                                        <div class="col-span-1 flex justify-end"><span>{{ item.price | number:'1.0-0' }}đ</span></div>
+                                    </div>
+                                    <div class="grid grid-cols-2  gap-3" *ngIf="item.discountPrice>0">
+                                        <div class="col-span-1 font-semibold">Giảm giá: </div>
+                                        <div class="col-span-1 flex justify-end"><span>- {{ item.discountPrice | number:'1.0-0' }}đ</span></div>
+                                    </div>
+                                    <div class="grid grid-cols-2 font-semibold gap-3">
+                                        <div class="col-span-1">Thành tiền: </div>
+                                        <div class="col-span-1 flex justify-end"><span>{{ item.finalPrice | number:'1.0-0' }} đ</span></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-span-1 lg:col-span-1 ">
+            <div class="shadow-gray-400 shadow-md border-[2px] border-border-color p-5 mt-3">
+                <h2 class="text-center mb-3">Thanh toán</h2>
+                <p class="mt-5 mb-3 font-semibold text-[18px]">Chi tiết thanh toán</p>
+                <div class="grid grid-cols-2 font-semibold gap-3 " *ngIf="discountPrice>0">
+                    <div class="col-span-1">Giá gốc: </div>
+                    <div class="col-span-1 flex justify-end"><span>{{ totalPrice | number:'1.0-0' }}đ</span></div>
+                </div>
+                <div class="grid grid-cols-2  gap-3" *ngIf="discountPrice>0">
+                    <div class="col-span-1 font-semibold">Giảm giá: </div>
+                    <div class="col-span-1 flex justify-end"><span>- {{ discountPrice | number:'1.0-0' }}đ</span></div>
+                </div>
+                <div class="grid grid-cols-2 font-semibold gap-3">
+                    <div class="col-span-1">Tổng tiền: </div>
+                    <div class="col-span-1 flex justify-end"><span>{{ finalPrice | number:'1.0-0' }} đ</span></div>
+                </div>
+<!--                <div class="flex  mt-3 font-bold text-4xl justify-center" *ngIf="discountPrice>0">-->
+<!--                    <h3>{{finalPrice | number:'1.0-0'}}đ</h3>-->
+<!--                </div>-->
+                <p class="mt-5 mb-3 font-semibold text-[18px]">Phương thức thanh toán</p>
+
+<!--                <div class="flex items center gap-3">-->
+<!--                    <input type="radio" id="paymentMethod" name="paymentMethod" value="1"  class="h-5 w-5" [(ngModel)]="paymentMethod" (change)="console.log(paymentMethod)">-->
+<!--                    <label for="paymentMethod">Thanh toán khi nhận hàng</label>-->
+<!--                </div>-->
+                <div class="flex items center gap-3">
+                    <input type="radio" id="paymentMethod" name="paymentMethod" value="paypal"  class="h-5 w-5" [(ngModel)]="paymentMethod" (change)="console.log(paymentMethod)">
+                    <label for="paymentMethod">Thanh toán qua Paypal</label>
+                </div>
+                <div class="mt-5">
+                    <button class="w-full bg-active-btn py-2.5 px-4 rounded-md text-white font-semibold hover:bg-active-btn-h" (click)="checkout()">Thanh toán</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="fixed inset-0  bg-[rgba(12,12,12,0.2)] flex items-center justify-center z-50" *ngIf="isLoaded">
+    <div class=" top-[2px] left-[48%]" >
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-blue-600"></div>
+    </div>
+</div>
+
+<div class="fixed inset-0  bg-[rgba(12,12,12,0.2)] flex items-center justify-center " *ngIf="hasProcessingOrder">
+    <div class="bg-white p-5 rounded-md shadow-gray-400 shadow-md w-[700px]">
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-[18px]">Đang xử lý đơn hàng</h2>
+
+        </div>
+        <p class="mt-5">Bạn có đơn hàng đang chờ thanh toán, để tiếp tục hãy hoàn tất thanh toán cho đơn hàng đó hoặc hủy đơn hàng đang chờ thanh toán</p>
+        <div class="flex justify-end mt-5 gap-x-10">
+            <button class="bg-active-btn py-2.5 px-4 rounded-md text-white font-semibold hover:bg-active-btn-h" (click)="router.navigate(['/'])">Quay lại</button>
+            <button class="bg-delete-btn py-2.5 px-4 rounded-md text-white font-semibold hover:bg-delete-btn-h" (click)="deleteProcessingOrder()">Hủy đơn hàng</button>
+        </div>
+    </div>
+</div>

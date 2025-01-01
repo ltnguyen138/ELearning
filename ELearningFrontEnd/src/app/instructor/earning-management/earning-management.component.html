@@ -1,0 +1,22 @@
+<p-confirmDialog [style]="{'max-width': '600px'}" ></p-confirmDialog>
+
+<div class=" mt-2 md:w-[95%] md:max-w-[1600px]  mx-auto px-2 text-text-color mb-10 relative overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white">
+
+    <div class="title border-b-[2px] border-border-color pb-5">
+        <h1 class="leading-relaxed">Quản lý doanh số</h1>
+    </div>
+
+    <div class="title border-b-[2px] border-b-neutral-300  mt-5">
+        <div class="flex gap-x-10 text-link-color  font-semibold text-[18px]   overflow-auto">
+
+            <a routerLink="statistics" class="hover:text-link-color-h pb-5 whitespace-nowrap" [ngClass]="{'border-black border-b-2 text-active-btn' : isCurrentUrl('statistics')}">Thống kê doanh số</a>
+            <a routerLink="payout" class="hover:text-link-color-h whitespace-nowrap" [ngClass]="{'border-black border-b-2 text-active-btn' : isCurrentUrl('payout')}">Quản lý thu nhập và rút tiền</a>
+            <a routerLink="payout-history" class="hover:text-link-color-h whitespace-nowrap" [ngClass]="{'border-black border-b-2 text-active-btn' : isCurrentUrl('history')}">Lịch sử rút tiền</a>
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <router-outlet></router-outlet>
+    </div>
+
+</div>
