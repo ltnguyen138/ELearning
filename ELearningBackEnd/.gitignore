@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+uploads/courses
+uploads/lectures
+uploads/users

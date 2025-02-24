@@ -1,4 +1,0 @@
-pg_dump -a -h 192.168.1.50 -U admin -W -F c xcorp_dev > D:\data.dump
-pg_dump -s -h 192.168.1.50 -U admin -W -F c xcorp_dev > D:\schema.dump
-pg_restore -h localhost -U postgres -W -F c -d xcorp_local D:\schema.dump
-pg_restore -h localhost -U postgres -W -F c -d xcorp_local D:\data.dump

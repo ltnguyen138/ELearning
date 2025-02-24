@@ -1,2 +1,0 @@
-Hello,AAAAA PrintWriter!
-Xin chào, PrintWriter!
